@@ -1,0 +1,53 @@
+.ui-alertdialog-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+}
+
+.ui-alertdialog {
+  max-width: 24rem;
+  padding: var(--ui-spacing-xl);
+  background: var(--ui-background);
+  border-radius: var(--ui-border-radius-lg);
+  box-shadow: var(--ui-shadow-lg);
+}
+
+.ui-alertdialog-title {
+  margin: 0 0 var(--ui-spacing-sm);
+  font-size: var(--ui-font-size-lg);
+}
+
+.ui-alertdialog-desc {
+  margin: 0 0 var(--ui-spacing-lg);
+  color: var(--ui-muted-foreground);
+  font-size: var(--ui-font-size-sm);
+}
+
+.ui-alertdialog-actions {
+  display: flex;
+  gap: var(--ui-spacing-sm);
+  justify-content: flex-end;
+}
+
+.ui-alertdialog-btn {
+  padding: var(--ui-spacing-sm) var(--ui-spacing-md);
+  border-radius: var(--ui-border-radius);
+  font-family: var(--ui-font-family);
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.ui-alertdialog-btn--primary {
+  background: var(--ui-primary);
+  color: var(--ui-primary-foreground);
+}
+
+.ui-alertdialog-btn--secondary {
+  background: var(--ui-muted);
+  color: var(--ui-foreground);
+  border-color: var(--ui-border);
+}

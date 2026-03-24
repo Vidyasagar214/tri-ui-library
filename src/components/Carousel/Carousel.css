@@ -1,0 +1,34 @@
+.ui-carousel {
+  overflow: hidden;
+  position: relative;
+}
+
+.ui-carousel-track {
+  display: flex;
+  transition: transform var(--ui-transition);
+}
+
+.ui-carousel-slide {
+  flex: 0 0 100%;
+  min-width: 0;
+}
+
+.ui-carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: var(--ui-spacing-sm);
+  margin-top: var(--ui-spacing-md);
+}
+
+.ui-carousel-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--ui-border-radius-full);
+  border: none;
+  background: var(--ui-border);
+  cursor: pointer;
+}
+
+.ui-carousel-dot--active {
+  background: var(--ui-primary);
+}

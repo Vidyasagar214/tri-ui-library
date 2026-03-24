@@ -1,0 +1,43 @@
+.ui-drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.ui-drawer {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 20rem;
+  max-width: 90vw;
+  background: var(--ui-background);
+  box-shadow: var(--ui-shadow-lg);
+  z-index: 1001;
+  padding: var(--ui-spacing-xl);
+  overflow: auto;
+}
+
+.ui-drawer--left {
+  left: 0;
+}
+
+.ui-drawer--right {
+  right: 0;
+}
+
+.ui-drawer-title {
+  margin: 0 0 var(--ui-spacing-lg);
+  font-size: var(--ui-font-size-lg);
+}
+
+.ui-drawer-close {
+  position: absolute;
+  top: var(--ui-spacing-md);
+  right: var(--ui-spacing-md);
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--ui-muted-foreground);
+}

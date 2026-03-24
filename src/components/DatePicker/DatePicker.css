@@ -1,0 +1,17 @@
+.ui-datepicker {
+  position: relative;
+}
+
+.ui-datepicker-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+}
+
+.ui-datepicker-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: var(--ui-spacing-xs);
+  z-index: 1000;
+}

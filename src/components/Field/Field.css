@@ -1,0 +1,21 @@
+.ui-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-spacing-xs);
+}
+
+.ui-field-label {
+  font-size: var(--ui-font-size-sm);
+  font-weight: var(--ui-font-weight-medium);
+  color: var(--ui-foreground);
+}
+
+.ui-field-hint {
+  font-size: var(--ui-font-size-xs);
+  color: var(--ui-muted-foreground);
+}
+
+.ui-field-error {
+  font-size: var(--ui-font-size-sm);
+  color: var(--ui-danger);
+}

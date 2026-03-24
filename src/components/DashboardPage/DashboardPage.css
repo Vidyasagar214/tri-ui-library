@@ -1,0 +1,110 @@
+.ui-dashboard {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: var(--ui-background);
+}
+
+.ui-dashboard--full-height {
+  min-height: 100vh;
+}
+
+.ui-dashboard-navbar {
+  flex-shrink: 0;
+  width: 100%;
+  z-index: 2;
+}
+
+.ui-dashboard-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+}
+
+.ui-dashboard-sidebar-wrap {
+  flex-shrink: 0;
+  display: flex;
+  min-height: 0;
+  max-height: 100%;
+  z-index: 1;
+}
+
+.ui-dashboard--full-height .ui-dashboard-sidebar-wrap {
+  align-self: stretch;
+}
+
+.ui-dashboard-main {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  background: var(--ui-shell-canvas);
+  position: relative;
+}
+
+/* Subtle top highlight on main canvas */
+.ui-dashboard-main::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 120px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.ui-dashboard-main--contained .ui-dashboard-main-inner {
+  max-width: 72rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ui-dashboard-main-inner {
+  position: relative;
+  z-index: 0;
+  padding: var(--ui-spacing-xl) var(--ui-spacing-2xl);
+}
+
+@media (max-width: 767px) {
+  .ui-dashboard-main-inner {
+    padding: var(--ui-spacing-lg) var(--ui-spacing-md);
+  }
+}
+
+@media (max-width: 767px) {
+  .ui-dashboard-body {
+    flex-direction: column;
+  }
+
+  .ui-dashboard-sidebar-wrap {
+    width: 100%;
+    max-height: none;
+  }
+
+  .ui-dashboard-sidebar-wrap .ui-sidebar {
+    width: 100% !important;
+    min-width: 0 !important;
+    border-right: none;
+    border-bottom: 1px solid var(--ui-shell-sidebar-border);
+    box-shadow: 0 8px 24px -12px rgba(15, 23, 42, 0.1);
+  }
+
+  .ui-dashboard-sidebar-wrap .ui-sidebar--collapsed {
+    width: 100% !important;
+  }
+
+  .ui-dashboard-sidebar-wrap .ui-sidebar--collapsed .ui-navlink-text {
+    position: static;
+    width: auto;
+    height: auto;
+    clip: auto;
+    margin: 0;
+    overflow: visible;
+    white-space: normal;
+  }
+
+  .ui-dashboard-sidebar-wrap .ui-sidebar--collapsed .ui-navlink {
+    justify-content: flex-start;
+    padding: var(--ui-spacing-sm) var(--ui-spacing-md);
+  }
+}

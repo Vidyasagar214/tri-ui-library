@@ -1,0 +1,102 @@
+.ui-accordion {
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ui-border-radius);
+  overflow: hidden;
+}
+
+.ui-accordion--borders .ui-accordion-item {
+  border-left: 3px solid var(--ui-primary);
+}
+
+.ui-accordion--card {
+  border: none;
+  background: transparent;
+}
+
+.ui-accordion--card .ui-accordion-item {
+  margin-bottom: var(--ui-spacing-sm);
+  border-radius: var(--ui-border-radius);
+  border: 1px solid var(--ui-border);
+  overflow: hidden;
+}
+
+.ui-accordion--card .ui-accordion-item:last-child {
+  margin-bottom: 0;
+}
+
+.ui-accordion--disabled .ui-accordion-trigger {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.ui-accordion-item {
+  border-bottom: 1px solid var(--ui-border);
+}
+
+.ui-accordion-item:last-child {
+  border-bottom: none;
+}
+
+.ui-accordion--card .ui-accordion-item {
+  border-bottom: none;
+}
+
+.ui-accordion-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ui-spacing-md);
+  padding: var(--ui-spacing-md) var(--ui-spacing-lg);
+  text-align: left;
+  font-family: var(--ui-font-family);
+  font-size: var(--ui-font-size-base);
+  font-weight: var(--ui-font-weight-medium);
+  background: var(--ui-muted);
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--ui-transition-fast);
+}
+
+.ui-accordion-trigger:hover:not(:disabled) {
+  background: var(--ui-border);
+}
+
+.ui-accordion-trigger:disabled {
+  cursor: not-allowed;
+}
+
+.ui-accordion-trigger-text {
+  flex: 1;
+}
+
+.ui-accordion-trigger-icon {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  transition: transform var(--ui-transition-fast);
+}
+
+.ui-accordion-trigger-icon::after {
+  content: "";
+  display: block;
+  width: 0.5em;
+  height: 0.5em;
+  margin: 0.25em 0 0 0.25em;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+}
+
+.ui-accordion-trigger[aria-expanded="true"] .ui-accordion-trigger-icon {
+  transform: rotate(-180deg);
+}
+
+.ui-accordion-panel {
+  padding: var(--ui-spacing-lg);
+  background: var(--ui-background);
+}
+
+.ui-accordion-panel[hidden] {
+  display: none;
+}

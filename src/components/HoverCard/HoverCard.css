@@ -1,0 +1,18 @@
+.ui-hovercard {
+  position: relative;
+  display: inline-block;
+}
+
+.ui-hovercard-content {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-var(--ui-spacing-sm));
+  padding: var(--ui-spacing-md);
+  background: var(--ui-background);
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ui-border-radius);
+  box-shadow: var(--ui-shadow-md);
+  z-index: 50;
+  min-width: 12rem;
+}

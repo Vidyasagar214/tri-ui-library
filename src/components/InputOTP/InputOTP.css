@@ -1,0 +1,22 @@
+.ui-inputotp {
+  display: flex;
+  gap: var(--ui-spacing-sm);
+  justify-content: center;
+}
+
+.ui-inputotp-digit {
+  width: 2.5rem;
+  height: 2.5rem;
+  text-align: center;
+  font-size: var(--ui-font-size-lg);
+  font-family: var(--ui-font-family);
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ui-border-radius);
+  background: var(--ui-background);
+}
+
+.ui-inputotp-digit:focus {
+  outline: none;
+  border-color: var(--ui-border-focus);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}

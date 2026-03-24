@@ -1,0 +1,58 @@
+/**
+ * Tri UI Library - Minimal CSS Reset
+ * Normalizes default styles for consistent rendering.
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  line-height: var(--ui-line-height-normal, 1.5);
+  font-family: var(--ui-font-family);
+  font-size: var(--ui-font-size-base);
+  color: var(--ui-foreground);
+  background-color: var(--ui-background);
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: var(--ui-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}

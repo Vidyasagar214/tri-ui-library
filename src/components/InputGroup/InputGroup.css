@@ -1,0 +1,34 @@
+.ui-inputgroup {
+  display: flex;
+  width: 100%;
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ui-border-radius);
+  overflow: hidden;
+}
+
+.ui-inputgroup-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.ui-inputgroup-input .ui-input {
+  border: none;
+  border-radius: 0;
+}
+
+.ui-inputgroup-addon {
+  display: flex;
+  align-items: center;
+  padding: var(--ui-spacing-sm) var(--ui-spacing-md);
+  background: var(--ui-muted);
+  color: var(--ui-muted-foreground);
+  font-size: var(--ui-font-size-sm);
+}
+
+.ui-inputgroup-addon--left {
+  border-right: 1px solid var(--ui-border);
+}
+
+.ui-inputgroup-addon--right {
+  border-left: 1px solid var(--ui-border);
+}

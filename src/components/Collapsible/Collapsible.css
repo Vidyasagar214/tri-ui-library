@@ -1,0 +1,21 @@
+.ui-collapsible {
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ui-border-radius);
+  overflow: hidden;
+}
+
+.ui-collapsible-trigger {
+  width: 100%;
+  padding: var(--ui-spacing-md) var(--ui-spacing-lg);
+  text-align: left;
+  font-family: var(--ui-font-family);
+  background: var(--ui-muted);
+  border: none;
+  cursor: pointer;
+}
+
+.ui-collapsible-content {
+  padding: var(--ui-spacing-lg);
+  border-top: 1px solid var(--ui-border);
+  background: var(--ui-background);
+}

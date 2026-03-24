@@ -1,0 +1,29 @@
+.ui-empty {
+  padding: var(--ui-spacing-2xl);
+  text-align: center;
+}
+
+.ui-empty-icon {
+  font-size: 3rem;
+  color: var(--ui-muted-foreground);
+  margin-bottom: var(--ui-spacing-md);
+}
+
+.ui-empty-title {
+  margin: 0 0 var(--ui-spacing-sm);
+  font-size: var(--ui-font-size-lg);
+  font-weight: var(--ui-font-weight-semibold);
+  color: var(--ui-foreground);
+}
+
+.ui-empty-desc {
+  margin: 0 0 var(--ui-spacing-lg);
+  font-size: var(--ui-font-size-sm);
+  color: var(--ui-muted-foreground);
+}
+
+.ui-empty-actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--ui-spacing-sm);
+}

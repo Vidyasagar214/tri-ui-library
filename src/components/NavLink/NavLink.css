@@ -1,0 +1,94 @@
+.ui-navlink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ui-spacing-sm);
+  padding: var(--ui-spacing-sm) var(--ui-spacing-md);
+  font-family: var(--ui-font-family);
+  font-size: var(--ui-font-size-sm);
+  font-weight: var(--ui-font-weight-medium);
+  color: var(--ui-muted-foreground);
+  background: none;
+  border: none;
+  border-radius: var(--ui-border-radius);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--ui-transition-fast), color var(--ui-transition-fast);
+  width: 100%;
+  text-align: left;
+}
+
+.ui-navlink:hover:not(.ui-navlink--disabled) {
+  color: var(--ui-foreground);
+  background-color: var(--ui-muted);
+}
+
+.ui-navlink--active {
+  color: var(--ui-primary);
+  background-color: rgba(37, 99, 235, 0.08);
+}
+
+.ui-navlink--active:hover:not(.ui-navlink--disabled) {
+  color: var(--ui-primary);
+  background-color: rgba(37, 99, 235, 0.12);
+}
+
+.ui-navlink--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ui-navlink-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 1.125em;
+  height: 1.125em;
+}
+
+.ui-navlink-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.ui-navlink-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.ui-navlink:focus-visible {
+  outline: 2px solid var(--ui-border-focus);
+  outline-offset: 2px;
+}
+
+/* Horizontal navbar: pill links */
+.ui-navbar-nav .ui-navlink,
+.ui-navbar-mobile-inner .ui-navlink {
+  width: auto;
+  border-radius: var(--ui-border-radius-full);
+  padding: var(--ui-spacing-sm) var(--ui-spacing-lg);
+  font-size: var(--ui-font-size-sm);
+}
+
+.ui-navbar-nav .ui-navlink:hover:not(.ui-navlink--disabled),
+.ui-navbar-mobile-inner .ui-navlink:hover:not(.ui-navlink--disabled) {
+  background-color: var(--ui-muted);
+  color: var(--ui-foreground);
+}
+
+.ui-navbar-nav .ui-navlink--active,
+.ui-navbar-mobile-inner .ui-navlink--active {
+  color: var(--ui-primary);
+  font-weight: var(--ui-font-weight-semibold);
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(99, 102, 241, 0.08));
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.12);
+}
+
+.ui-navbar-nav .ui-navlink--active:hover:not(.ui-navlink--disabled),
+.ui-navbar-mobile-inner .ui-navlink--active:hover:not(.ui-navlink--disabled) {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.16), rgba(99, 102, 241, 0.1));
+  color: var(--ui-primary);
+}
+
+.ui-navbar-mobile-inner .ui-navlink {
+  width: 100%;
+  justify-content: flex-start;
+}

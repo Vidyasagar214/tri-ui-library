@@ -1,0 +1,51 @@
+.ui-calendar {
+  padding: var(--ui-spacing-md);
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ui-border-radius);
+  background: var(--ui-background);
+}
+
+.ui-calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--ui-spacing-md);
+}
+
+.ui-calendar-header button {
+  padding: var(--ui-spacing-xs) var(--ui-spacing-sm);
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ui-border-radius-sm);
+  background: var(--ui-muted);
+  cursor: pointer;
+}
+
+.ui-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--ui-spacing-xs);
+}
+
+.ui-calendar-weekday {
+  font-size: var(--ui-font-size-xs);
+  font-weight: var(--ui-font-weight-semibold);
+  color: var(--ui-muted-foreground);
+  text-align: center;
+}
+
+.ui-calendar-day {
+  padding: var(--ui-spacing-sm);
+  border: none;
+  border-radius: var(--ui-border-radius-sm);
+  background: transparent;
+  cursor: pointer;
+  font-size: var(--ui-font-size-sm);
+}
+
+.ui-calendar-day:hover:not(.ui-calendar-day--empty) {
+  background: var(--ui-muted);
+}
+
+.ui-calendar-day--empty {
+  cursor: default;
+}

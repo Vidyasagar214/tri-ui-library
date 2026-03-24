@@ -1,0 +1,26 @@
+/**
+ * Tri UI Library - Global Styles
+ * Base utility and layout classes using design variables.
+ */
+
+/* Ensure variables are available when only global is imported */
+@import "./variables.css";
+
+/* Focus visible for accessibility */
+.ui-focus-ring:focus-visible {
+  outline: 2px solid var(--ui-border-focus);
+  outline-offset: 2px;
+}
+
+/* Screen reader only - for accessible labels */
+.ui-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

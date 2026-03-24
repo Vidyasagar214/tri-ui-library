@@ -1,0 +1,36 @@
+.ui-chart {
+  padding: var(--ui-spacing-lg);
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ui-border-radius);
+  background: var(--ui-background);
+}
+
+.ui-chart-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--ui-spacing-md);
+  height: 8rem;
+}
+
+.ui-chart-bar-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ui-spacing-xs);
+}
+
+.ui-chart-bar {
+  width: 100%;
+  max-width: 2rem;
+  min-height: 2px;
+  background: var(--ui-primary);
+  border-radius: var(--ui-border-radius-sm);
+  transition: height var(--ui-transition);
+}
+
+.ui-chart-label {
+  font-size: var(--ui-font-size-xs);
+  color: var(--ui-muted-foreground);
+  text-align: center;
+}
