@@ -57,6 +57,12 @@ const DashLayoutIcon = () => (
 const DashSettingsIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3" /><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" /></svg>
 );
+/** Demo-only: inline SVG as data URL for Navbar logoSrc examples */
+const DEMO_NAVBAR_LOGO_SRC =
+  "data:image/svg+xml," +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36"><rect width="36" height="36" rx="8" fill="%232563eb"/></svg>'
+  );
 
 /** Default installation snippet for any component */
 const defaultInstall = `npm install tri-ui-library`;
@@ -894,7 +900,8 @@ export const componentsRegistry = [
                 sidebarCollapsed={collapsed}
                 navbar={
                   <Navbar
-                    brandMark
+                    logoSrc={DEMO_NAVBAR_LOGO_SRC}
+                    logoAlt=""
                     brand={<strong style={{ fontSize: "var(--ui-font-size-lg)" }}>Acme</strong>}
                     nav={(
                       <div className="demo-navbar-nav-wrap">
@@ -950,7 +957,8 @@ export const componentsRegistry = [
             <DashboardPage
               navbar={(
                 <Navbar
-                  brandMark
+                  logoSrc={DEMO_NAVBAR_LOGO_SRC}
+                  logoAlt=""
                   brand={<strong>App</strong>}
                   nav={(
                     <div className="demo-navbar-nav-wrap">
@@ -982,7 +990,7 @@ export const componentsRegistry = [
                 mainWidth="contained"
                 sidebarCollapsed={c}
                 navbar={(
-                  <Navbar brandMark brand={<strong>Studio</strong>} nav={<div className="demo-navbar-nav-wrap"><NavLink href="#" active>Dashboard</NavLink></div>} actions={<Button variant="ghost" size="sm">User</Button>} variant="transparent" />
+                  <Navbar logoSrc={DEMO_NAVBAR_LOGO_SRC} logoAlt="" brand={<strong>Studio</strong>} nav={<div className="demo-navbar-nav-wrap"><NavLink href="#" active>Dashboard</NavLink></div>} actions={<Button variant="ghost" size="sm">User</Button>} variant="transparent" />
                 )}
                 sidebar={(
                   <Sidebar collapsed={c} onToggleCollapse={setC} showCollapseButton items={[{ id: "a", label: "Item", active: true, onClick: () => {} }]} variant="minimal" />
@@ -1056,12 +1064,14 @@ export const componentsRegistry = [
   {
     id: "navbar",
     name: "Navbar",
-    description: "Top bar with brand, navigation, and actions. Responsive mobile menu toggle.",
+    description: "Top bar with brand, navigation, and actions. Use logoSrc or logo for an image; logoPlaceholder for a dashed slot; brandMark for a gradient square when you have no asset yet.",
     examples: [
       {
         id: "default",
-        title: "Default",
+        title: "Default (logo image)",
         code: `<Navbar
+  logoSrc="/logo.png"
+  logoAlt="My company"
   brand={<strong>My App</strong>}
   nav={
     <div className="demo-navbar-nav-wrap">
@@ -1073,7 +1083,8 @@ export const componentsRegistry = [
 />`,
         Demo: () => (
           <Navbar
-            brandMark
+            logoSrc={DEMO_NAVBAR_LOGO_SRC}
+            logoAlt=""
             brand={<strong>My App</strong>}
             nav={(
               <div className="demo-navbar-nav-wrap">
@@ -1083,6 +1094,45 @@ export const componentsRegistry = [
             )}
             actions={<Button variant="primary" size="sm">Get started</Button>}
             variant="default"
+          />
+        ),
+      },
+      {
+        id: "logo-placeholder",
+        title: "Logo placeholder",
+        code: `<Navbar
+  logoPlaceholder
+  brand={<strong>My App</strong>}
+  nav={...}
+/>
+{/* Then switch to logoSrc="/logo.svg" logoAlt="App" when ready */}`,
+        Demo: () => (
+          <Navbar
+            logoPlaceholder
+            brand={<strong>My App</strong>}
+            nav={(
+              <div className="demo-navbar-nav-wrap">
+                <NavLink href="#">Home</NavLink>
+                <NavLink href="#">Docs</NavLink>
+              </div>
+            )}
+            actions={<Button variant="ghost" size="sm">Sign in</Button>}
+          />
+        ),
+      },
+      {
+        id: "gradient-mark",
+        title: "Gradient mark (no image)",
+        code: `<Navbar brandMark brand={<strong>My App</strong>} nav={...} />`,
+        Demo: () => (
+          <Navbar
+            brandMark
+            brand={<strong>My App</strong>}
+            nav={(
+              <div className="demo-navbar-nav-wrap">
+                <NavLink href="#">Home</NavLink>
+              </div>
+            )}
           />
         ),
       },
@@ -1156,8 +1206,12 @@ export const componentsRegistry = [
       },
     ],
     api: [
-      { name: "brand", type: "ReactNode", default: "-", description: "Left brand / logo" },
-      { name: "brandMark", type: "boolean", default: "false", description: "Gradient mark before brand (use false for image logos)" },
+      { name: "brand", type: "ReactNode", default: "-", description: "App name / text beside the logo" },
+      { name: "logoSrc", type: "string", default: "-", description: "Image URL for logo (<img>)" },
+      { name: "logoAlt", type: "string", default: "''", description: "Alt text for logoSrc" },
+      { name: "logo", type: "ReactNode", default: "-", description: "Custom logo node (overrides logoSrc)" },
+      { name: "logoPlaceholder", type: "boolean", default: "false", description: "Dashed box when no logo yet" },
+      { name: "brandMark", type: "boolean", default: "false", description: "Gradient square if no logo / placeholder" },
       { name: "nav", type: "ReactNode", default: "-", description: "Primary navigation" },
       { name: "actions", type: "ReactNode", default: "-", description: "Right actions" },
       { name: "variant", type: "'default' | 'bordered' | 'transparent'", default: "'default'", description: "Visual style" },

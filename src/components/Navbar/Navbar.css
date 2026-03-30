@@ -71,6 +71,46 @@
   box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
 }
 
+/* Logo slot: image or custom node */
+.ui-navbar-logo-wrap {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.ui-navbar-logo {
+  display: block;
+  width: auto;
+  height: 2.25rem;
+  max-width: 8rem;
+  object-fit: contain;
+  object-position: left center;
+  border-radius: var(--ui-border-radius-sm);
+}
+
+.ui-navbar--dense .ui-navbar-logo {
+  height: 2rem;
+  max-width: 7rem;
+}
+
+/* Empty placeholder until you pass logoSrc or logo */
+.ui-navbar-logo-placeholder {
+  display: block;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex-shrink: 0;
+  border-radius: var(--ui-border-radius-md);
+  border: 2px dashed var(--ui-border);
+  background: var(--ui-muted);
+  box-sizing: border-box;
+}
+
+.ui-navbar--dense .ui-navbar-logo-placeholder {
+  width: 2rem;
+  height: 2rem;
+}
+
 .ui-navbar-nav {
   display: none;
   flex: 1;

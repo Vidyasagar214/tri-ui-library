@@ -1,6 +1,15 @@
 import React, { useState, useId } from "react";
 import "./Navbar.css";
 
+/**
+ * Top application bar.
+ * @param {React.ReactNode} brand - App name / text next to the logo
+ * @param {React.ReactNode} logo - Custom logo (SVG, component, etc.) — takes precedence over logoSrc
+ * @param {string} logoSrc - Image URL for the logo (renders <img class="ui-navbar-logo">)
+ * @param {string} logoAlt - Alt text for logoSrc (accessibility)
+ * @param {boolean} logoPlaceholder - When true and no logo/logoSrc, show a dashed placeholder box (same size as logo slot)
+ * @param {boolean} brandMark - Gradient square when no logo, logoSrc, or placeholder
+ */
 function Navbar({
   brand,
   nav,
@@ -8,8 +17,11 @@ function Navbar({
   variant = "default",
   sticky = false,
   dense = false,
-  /** When true, shows a gradient mark before brand (text logos). Set false for custom image logos. */
   brandMark = false,
+  logo,
+  logoSrc,
+  logoAlt = "",
+  logoPlaceholder = false,
   mobileMenuOpen: controlledMobileOpen,
   onMobileMenuChange,
   className = "",
@@ -24,6 +36,11 @@ function Navbar({
     onMobileMenuChange?.(open);
   };
 
+  const hasLogo = logo != null && logo !== "" && logo !== false;
+  const hasLogoImg = Boolean(logoSrc);
+  const showPlaceholder = logoPlaceholder && !hasLogo && !hasLogoImg;
+  const showGradientMark = brandMark && !hasLogo && !hasLogoImg && !showPlaceholder;
+
   const classNames = [
     "ui-navbar",
     `ui-navbar--${variant}`,
@@ -34,12 +51,35 @@ function Navbar({
     .filter(Boolean)
     .join(" ");
 
+  const brandClassNames = [
+    "ui-navbar-brand",
+    showGradientMark && "ui-navbar-brand--with-mark",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  let logoEl = null;
+  if (hasLogo) {
+    logoEl = <span className="ui-navbar-logo-wrap">{logo}</span>;
+  } else if (hasLogoImg) {
+    logoEl = (
+      <span className="ui-navbar-logo-wrap">
+        <img className="ui-navbar-logo" src={logoSrc} alt={logoAlt} />
+      </span>
+    );
+  } else if (showPlaceholder) {
+    logoEl = (
+      <span className="ui-navbar-logo-wrap" aria-hidden="true">
+        <span className="ui-navbar-logo-placeholder" title="Add logo via logoSrc or logo prop" />
+      </span>
+    );
+  }
+
   return (
     <header className={classNames} role="banner">
       <div className="ui-navbar-inner">
-        <div
-          className={["ui-navbar-brand", brandMark && "ui-navbar-brand--with-mark"].filter(Boolean).join(" ")}
-        >
+        <div className={brandClassNames}>
+          {logoEl}
           {brand}
         </div>
         <nav className="ui-navbar-nav" aria-label="Main">
