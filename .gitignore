@@ -1,0 +1,18 @@
+# Dependencies (never commit — avoids broken .bin permissions on Linux/Vercel)
+node_modules/
+
+# Builds
+dist/
+dist-site/
+
+# Local / OS
+.DS_Store
+Thumbs.db
+*.log
+.env
+.env.*
+
+# Editor
+.idea/
+.vscode/*
+!.vscode/extensions.json

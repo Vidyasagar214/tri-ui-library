@@ -44,11 +44,11 @@
   },
   "homepage": "https://github.com/Vidyasagar214/tri-ui-library#readme",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "build:site": "vite build --config vite.config.site.js",
-    "preview": "vite preview",
-    "preview:site": "vite preview --config vite.config.site.js",
+    "dev": "node ./node_modules/vite/bin/vite.js",
+    "build": "node ./node_modules/vite/bin/vite.js build",
+    "build:site": "node ./node_modules/vite/bin/vite.js build --config vite.config.site.js",
+    "preview": "node ./node_modules/vite/bin/vite.js preview",
+    "preview:site": "node ./node_modules/vite/bin/vite.js preview --config vite.config.site.js",
     "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
