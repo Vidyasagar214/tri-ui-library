@@ -43,10 +43,15 @@ function ComponentDetailPage() {
 
   if (!comp) {
     return (
-      <div className="demo-detail-wrap">
+      <div className="demo-detail-wrap demo-detail-wrap--simple">
         <div className="demo-detail-main">
-          <p>Component not found.</p>
-          <Link to="/" className="demo-back">← Back to components</Link>
+          <header className="demo-detail-header">
+            <div className="demo-doc-heading-row">
+              <Link to="/components" className="demo-back demo-page-heading-back">← Back to components</Link>
+              <h1 className="demo-page-title">Component not found</h1>
+            </div>
+            <p className="demo-page-lead">No component matches this URL in the catalog.</p>
+          </header>
         </div>
       </div>
     );
@@ -66,11 +71,13 @@ import "tri-ui-library/styles.css";`;
   return (
     <div className="demo-detail-wrap">
       <div className="demo-detail-main">
-        <header className="demo-detail-page-header">
-          <Link to="/" className="demo-back">← Back</Link>
-          <h1 className="demo-detail-title">{comp.name}</h1>
+        <header className="demo-detail-header">
+          <div className="demo-doc-heading-row">
+            <Link to="/components" className="demo-back demo-page-heading-back">← Back to components</Link>
+            <h1 className="demo-page-title">{comp.name}</h1>
+          </div>
+          <p className="demo-page-lead demo-detail-intro">{comp.description}</p>
         </header>
-        <p className="demo-detail-desc">{comp.description}</p>
 
         <section id="installation" className="demo-detail-section">
           <h2 className="demo-detail-heading">Installation</h2>

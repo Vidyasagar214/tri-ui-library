@@ -26,7 +26,10 @@ function ExamplesGalleryPage() {
       <header className="demo-examples-header">
         <p className="demo-page-eyebrow">Dashboard layouts</p>
         <div className="demo-page-title-row">
-          <h1 className="demo-page-title">Layout examples</h1>
+          <div className="demo-page-title-group">
+            <Link to="/" className="demo-back demo-page-heading-back">← Home</Link>
+            <h1 className="demo-page-title">Layout examples</h1>
+          </div>
           <DemoPageSearch
             id="demo-examples-search"
             value={query}

@@ -1,8 +1,18 @@
-/* Demo app layout and component showcase styles */
+/**
+ * Demo site / docs shell — layout, pages, and preview helpers for componentsRegistry.
+ * Organized: layout → nav → landing → installation → main/doc → pages → detail → API → helpers → footer.
+ */
+
+/* -------------------------------------------------------------------------- */
+/* Layout root & design tokens                                                */
+/* -------------------------------------------------------------------------- */
 
 .demo-layout {
   --demo-font-sans: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --demo-font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  /* Same inset as installation + home content: 40px × 30px (responsive) */
+  --demo-content-pad-x: clamp(1rem, 4vw, 2.5rem);
+  --demo-content-pad-y: clamp(1rem, 3vw, 1.875rem);
 
   min-height: 100vh;
   display: flex;
@@ -17,25 +27,50 @@
     linear-gradient(180deg, #f8fafc 0%, #f1f5f9 42%, #eceff5 100%);
 }
 
+/* -------------------------------------------------------------------------- */
+/* Top navigation                                                             */
+/* -------------------------------------------------------------------------- */
+
 .demo-nav {
   flex-shrink: 0;
   position: sticky;
   top: 0;
   z-index: 100;
-  padding: 1rem clamp(1.25rem, 4vw, 2rem);
+  padding: 1rem var(--demo-content-pad-x);
   background: rgba(255, 255, 255, 0.78);
   backdrop-filter: blur(16px) saturate(160%);
   -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border-top: 3px solid #fef3c7;
   border-bottom: 1px solid rgba(148, 163, 184, 0.28);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.85) inset;
 }
 
-.demo-nav-logo {
+.demo-nav-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  text-decoration: none !important;
+  min-width: 0;
+}
+
+.demo-nav-brand:hover .demo-nav-logo-text {
+  filter: brightness(1.08);
+  text-decoration:none !important ;
+}
+
+.demo-nav-logo-img {
+  height: 1.75rem;
+  width: auto;
+  flex-shrink: 0;
+  display: block;
+  object-fit: contain;
+}
+
+.demo-nav-logo-text {
   font-family: var(--demo-font-display);
   font-size: 1.375rem;
   font-weight: 700;
   letter-spacing: -0.03em;
-  text-decoration: none;
   background: linear-gradient(118deg, #a16207 0%, #ca8a04 35%, #d97706 70%, #ea580c 100%);
   -webkit-background-clip: text;
   background-clip: text;
@@ -44,8 +79,11 @@
   transition: filter var(--ui-transition-fast), opacity var(--ui-transition-fast);
 }
 
-.demo-nav-logo:hover {
-  filter: brightness(1.08);
+.demo-nav-logo-text--landing {
+  color: #b45309;
+  background: none;
+  -webkit-text-fill-color: #b45309;
+  filter: none;
 }
 
 .demo-nav-inner {
@@ -90,15 +128,336 @@
   box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.28);
 }
 
-.demo-main {
-  flex: 1;
-  padding: clamp(2rem, 5vw, 3.5rem) clamp(1.25rem, 4vw, 2rem) clamp(3rem, 7vw, 4.5rem);
+/* Landing route: gradient bar + GitHub / version */
+.demo-nav--landing {
+  background-color: #f1f5f9;
+  border-bottom-color: rgba(0, 0, 0, 0.1);
+  box-shadow: none;
+}
+
+.demo-nav--landing .demo-nav-inner {
   max-width: 88rem;
-  margin: 0 auto;
+}
+
+.demo-nav-landing-right {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.65rem 1rem;
+}
+
+.demo-nav-version-pill {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #222222;
+  background: rgba(0, 0, 0, 0.18);
+  padding: 0.4rem 0.85rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.demo-nav-github {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #222222;
+  text-decoration: none;
+  padding: 0.45rem 0.65rem;
+  border-radius: var(--ui-border-radius);
+  transition: background-color var(--ui-transition-fast);
+}
+
+.demo-nav-github:hover {
+  background-color: rgba(255, 255, 255, 0.14);
+  color: #ca8a04;
+}
+
+.demo-nav-github-svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex-shrink: 0;
+}
+
+.demo-nav-external-svg {
+  width: 0.85rem;
+  height: 0.85rem;
+  flex-shrink: 0;
+  opacity: 0.9;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Landing route (/)                                                          */
+/* -------------------------------------------------------------------------- */
+
+.demo-main--landing {
+  max-width: none;
+  padding: var(--demo-content-pad-y) var(--demo-content-pad-x);
+}
+
+.demo-landing-hero {
+  padding: var(--demo-content-pad-y) 0;
+  text-align: center;
+  background: none;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+}
+
+.demo-landing-hero-title {
+  margin: 0 0 1rem;
+  font-family: var(--demo-font-display);
+  font-size: clamp(2.25rem, 5vw, 3.25rem);
+  font-weight: 700;
+  color: #212529;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.demo-landing-hero-lead {
+  margin: 0 auto 2rem;
+  max-width: 40rem;
+  font-size: 1.125rem;
+  line-height: 1.65;
+  color: #495057;
+}
+
+.demo-landing-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.demo-landing-cta.ui-btn--primary {
+  background: linear-gradient(118deg, #a16207 0%, #ca8a04 35%, #d97706 70%, #ea580c 100%);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  box-shadow: 0 2px 12px rgba(180, 83, 9, 0.35);
+}
+
+.demo-landing-cta.ui-btn--primary:hover:not(.ui-btn--disabled) {
+  background: linear-gradient(118deg, #b45309 0%, #d97706 35%, #ea580c 70%, #f97316 100%);
+  border-color: rgba(255, 255, 255, 0.35);
+  filter: brightness(1.03);
+  text-decoration: none !important;
+}
+
+.demo-landing-cta.ui-btn--primary:active:not(.ui-btn--disabled) {
+  filter: brightness(0.96);
+}
+
+.demo-landing-cta {
+  text-decoration: none;
+}
+
+.demo-landing-version-line {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #6c757d;
   width: 100%;
 }
 
-/* Shared page typography (home, examples, detail intros) */
+.demo-landing-features {
+  margin: 0;
+  padding: var(--demo-content-pad-y) var(--demo-content-pad-x)
+    calc(var(--demo-content-pad-y) * 1.5);
+  background: #ffffff;
+}
+
+.demo-landing-features-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.demo-landing-features-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .demo-landing-features-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem 2rem;
+  }
+}
+
+.demo-landing-feature-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #212529;
+  letter-spacing: -0.02em;
+}
+
+.demo-landing-feature-text {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: #495057;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Installation page — inset from .demo-main--doc only                          */
+/* -------------------------------------------------------------------------- */
+
+.demo-install {
+  max-width: none;
+  padding: 0;
+}
+
+.demo-install-header {
+  margin-bottom: 1.25rem;
+}
+
+/* Shared: back pill + page title (installation, component detail, example detail, not-found) */
+.demo-doc-heading-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.demo-doc-heading-row .demo-page-title {
+  margin: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.demo-install-section {
+  margin-bottom: 2.25rem;
+}
+
+.demo-install-h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+}
+
+.demo-install-p {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: #475569;
+}
+
+.demo-install-list {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: #475569;
+  line-height: 1.65;
+}
+
+.demo-install-list li {
+  margin-bottom: 0.5rem;
+}
+
+.demo-install-list a {
+  font-weight: 600;
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.demo-install-list a:hover {
+  text-decoration: underline;
+}
+
+.demo-install-pre {
+  margin: 0 0 1rem;
+  padding: 1rem 1.15rem;
+  overflow-x: auto;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  background: linear-gradient(165deg, #1e293b 0%, #0f172a 100%);
+  color: #e2e8f0;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(51, 65, 85, 0.8);
+}
+
+.demo-install-pre code {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.demo-install-inline-code {
+  font-size: 0.875em;
+  padding: 0.12em 0.35em;
+  background: #f1f5f9;
+  border-radius: 0.25rem;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.demo-main {
+  flex: 1;
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Doc shell (all app routes except /)                                        */
+/* -------------------------------------------------------------------------- */
+
+.demo-layout--doc .demo-nav-inner {
+  max-width: none;
+}
+
+.demo-layout--doc .demo-nav {
+  padding: 1rem var(--demo-content-pad-x);
+}
+
+.demo-main--doc {
+  max-width: none;
+  padding: var(--demo-content-pad-y) var(--demo-content-pad-x);
+}
+
+.demo-main--doc .demo-page-lead {
+  max-width: none;
+}
+
+.demo-main--doc .demo-detail-wrap {
+  gap: 1.5rem;
+  padding-bottom: var(--demo-content-pad-y);
+}
+
+.demo-main--doc .demo-detail-section {
+  margin-bottom: 1.75rem;
+}
+
+.demo-main--doc .demo-detail-intro {
+  max-width: none;
+}
+
+.demo-main--doc .demo-home-header,
+.demo-main--doc .demo-examples-header,
+.demo-main--doc .demo-install-header {
+  margin-bottom: 1.25rem;
+}
+
+.demo-main--doc .demo-page-eyebrow {
+  margin: 0 0 0.75rem;
+}
+
+.demo-main--doc .demo-page-title-row {
+  margin-bottom: 1rem;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Shared page typography & chrome                                            */
+/* -------------------------------------------------------------------------- */
+
 .demo-page-eyebrow {
   margin: 0 0 0.75rem;
   font-size: 0.6875rem;
@@ -137,10 +496,27 @@
   margin-bottom: 1rem;
 }
 
-.demo-page-title-row .demo-page-title {
-  margin-bottom: 0;
+/* Components list: ← Home + title on one row (left), search on the right */
+.demo-page-title-group {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
   flex: 1 1 auto;
-  min-width: min(100%, 10rem);
+  min-width: 0;
+}
+
+.demo-page-heading-back.demo-back {
+  margin-bottom: 0;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.demo-page-title-group .demo-page-title {
+  margin: 0;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .demo-page-search {
@@ -226,13 +602,17 @@
   box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
 }
 
-/* Home page */
+/* -------------------------------------------------------------------------- */
+/* Components home (/components)                                              */
+/* -------------------------------------------------------------------------- */
+
 .demo-home {
   max-width: 100%;
+  padding: 0;
 }
 
 .demo-home-header {
-  margin-bottom: clamp(2.25rem, 4.5vw, 3.25rem);
+  margin-bottom: 1.25rem;
 }
 
 .demo-home-grid {
@@ -310,18 +690,15 @@
   }
 }
 
-/* Detail page: two-column layout */
+/* -------------------------------------------------------------------------- */
+/* Component & example detail                                                   */
+/* -------------------------------------------------------------------------- */
+
 .demo-detail-wrap {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--ui-spacing-2xl);
   padding-bottom: var(--ui-spacing-2xl);
-}
-
-@media (min-width: 1024px) {
-  .demo-detail-wrap {
-    grid-template-columns: minmax(0, 1fr) 12rem;
-  }
 }
 
 .demo-detail-main {
@@ -333,6 +710,14 @@
 }
 
 @media (min-width: 1024px) {
+  .demo-detail-wrap {
+    grid-template-columns: minmax(0, 1fr) 12rem;
+  }
+
+  .demo-detail-wrap--simple {
+    grid-template-columns: 1fr;
+  }
+
   .demo-detail-sidebar {
     display: block;
     position: sticky;
@@ -343,7 +728,7 @@
   }
 }
 
-/* On this page nav */
+/* “On this page” sidebar */
 .demo-on-this-page {
   padding: var(--ui-spacing-md);
   border-left: 1px solid var(--ui-border);
@@ -406,12 +791,12 @@
   font-size: var(--ui-font-size-xs);
 }
 
-.demo-detail-page-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--ui-spacing-md);
-  margin-bottom: var(--ui-spacing-xs);
+.demo-detail-header {
+  margin-bottom: 0.25rem;
+}
+
+.demo-detail-intro {
+  margin: 0 0 1.25rem;
 }
 
 .demo-back {
@@ -436,35 +821,12 @@
     box-shadow var(--ui-transition-fast);
 }
 
-.demo-detail-page-header .demo-back {
-  margin-bottom: 0;
-}
-
 .demo-back:hover {
   text-decoration: none;
   background: #ffffff;
   color: #1d4ed8;
   border-color: rgba(59, 130, 246, 0.45);
   box-shadow: 0 2px 8px rgba(37, 99, 235, 0.12);
-}
-
-.demo-detail-title {
-  margin: 0;
-  font-family: var(--demo-font-display, var(--ui-font-family));
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  font-weight: 700;
-  font-variation-settings: "opsz" 72;
-  letter-spacing: -0.02em;
-  color: #0f172a;
-  line-height: var(--ui-line-height-tight);
-}
-
-.demo-detail-desc {
-  margin: 0 0 var(--ui-spacing-xl);
-  font-size: 1.0625rem;
-  color: #64748b;
-  line-height: 1.6;
-  max-width: 42rem;
 }
 
 .demo-detail-section {
@@ -559,7 +921,10 @@
   font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
-/* API Reference table */
+/* -------------------------------------------------------------------------- */
+/* API reference table                                                        */
+/* -------------------------------------------------------------------------- */
+
 .demo-api-table-wrap {
   overflow-x: auto;
   border: 1px solid var(--ui-border);
@@ -596,7 +961,10 @@
   border-radius: var(--ui-border-radius-sm);
 }
 
-/* Demo helpers (used inside component previews) */
+/* -------------------------------------------------------------------------- */
+/* Preview helpers (componentsRegistry demos)                                 */
+/* -------------------------------------------------------------------------- */
+
 .demo-stack {
   display: flex;
   flex-direction: column;
@@ -635,7 +1003,104 @@
   color: var(--ui-muted-foreground);
 }
 
-/* Navbar demo: stack links on small screens, row on desktop */
+/* -------------------------------------------------------------------------- */
+/* Site footer                                                                */
+/* -------------------------------------------------------------------------- */
+
+.demo-footer {
+  flex-shrink: 0;
+  margin-top: auto;
+  border-top: 1px solid rgba(148, 163, 184, 0.35);
+}
+
+.demo-footer-accent {
+  height: 3px;
+  background: #fef3c7;
+  flex-shrink: 0;
+}
+
+.demo-footer-links-wrap {
+  padding: var(--demo-content-pad-y) var(--demo-content-pad-x) calc(var(--demo-content-pad-y) * 1.1);
+  background: #ffffff;
+}
+
+.demo-footer-links-inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem 2.5rem;
+  max-width: 72rem;
+  margin: 0 auto 2.25rem;
+}
+
+@media (min-width: 640px) {
+  .demo-footer-links-inner {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.demo-footer-col-title {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #212529;
+}
+
+.demo-footer-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.demo-footer-list li {
+  margin-bottom: 0.55rem;
+}
+
+.demo-footer-list li:last-child {
+  margin-bottom: 0;
+}
+
+.demo-footer-link {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #495057;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  transition: color var(--ui-transition-fast);
+}
+
+.demo-footer-link:hover {
+  color: #0f172a;
+}
+
+a.demo-footer-link--external {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  text-decoration: underline;
+}
+
+.demo-footer-external-svg {
+  width: 0.8rem;
+  height: 0.8rem;
+  flex-shrink: 0;
+  opacity: 0.75;
+}
+
+.demo-footer-legal {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding-top: 1.75rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.35);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: #6c757d;
+  text-align: center;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Docs previews: Navbar + Dashboard                                          */
+/* -------------------------------------------------------------------------- */
+
 .demo-navbar-nav-wrap {
   display: flex;
   flex-direction: column;
@@ -652,7 +1117,6 @@
   }
 }
 
-/* Constrain dashboard previews in docs */
 .demo-dashboard-preview {
   min-height: 22rem;
   border: 1px solid rgba(148, 163, 184, 0.35);

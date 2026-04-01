@@ -36,8 +36,13 @@ function ExampleLayoutDetailPage() {
   if (!ex) {
     return (
       <div className="demo-example-page">
-        <p>Example not found.</p>
-        <Link to="/examples" className="demo-back">← Back to examples</Link>
+        <header className="demo-example-detail-header">
+          <div className="demo-doc-heading-row">
+            <Link to="/examples" className="demo-back demo-page-heading-back">← All examples</Link>
+            <h1 className="demo-page-title">Example not found</h1>
+          </div>
+          <p className="demo-page-lead">No layout example matches this URL.</p>
+        </header>
       </div>
     );
   }
@@ -47,9 +52,11 @@ function ExampleLayoutDetailPage() {
   return (
     <div className="demo-example-detail">
       <header className="demo-example-detail-header">
-        <Link to="/examples" className="demo-back">← All examples</Link>
-        <h1 className="demo-page-title">{ex.title}</h1>
-        <p className="demo-page-lead">{ex.tagline}</p>
+        <div className="demo-doc-heading-row">
+          <Link to="/examples" className="demo-back demo-page-heading-back">← All examples</Link>
+          <h1 className="demo-page-title">{ex.title}</h1>
+        </div>
+        <p className="demo-page-lead demo-detail-intro">{ex.tagline}</p>
       </header>
 
       <div className="demo-example-tabs" role="tablist" aria-label="Example view">

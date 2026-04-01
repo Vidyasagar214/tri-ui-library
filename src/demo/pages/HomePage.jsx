@@ -24,9 +24,14 @@ function HomePage() {
   return (
     <div className="demo-home">
       <header className="demo-home-header">
-        <p className="demo-page-eyebrow">Component library</p>
+        {/* <p className="demo-page-eyebrow">Component library</p> */}
         <div className="demo-page-title-row">
-          <h1 className="demo-page-title">Tri UI Library</h1>
+          <div className="demo-page-title-group">
+            <Link to="/" className="demo-back demo-page-heading-back">
+              ← Home
+            </Link>
+            <h1 className="demo-page-title">Components</h1>
+          </div>
           <DemoPageSearch
             id="demo-home-search"
             value={query}

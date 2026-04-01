@@ -3,10 +3,11 @@
 .demo-example-page {
   max-width: 100%;
   margin: 0 auto;
+  padding: 0;
 }
 
 .demo-examples-header {
-  margin-bottom: clamp(2.25rem, 4.5vw, 3.25rem);
+  margin-bottom: 1.25rem;
 }
 
 .demo-examples-grid {
@@ -199,12 +200,15 @@
 }
 
 .demo-example-detail-header {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
-.demo-example-detail-header .demo-back {
-  display: inline-block;
-  margin-bottom: var(--ui-spacing-md);
+.demo-main--doc .demo-example-tabs {
+  margin-bottom: 1rem;
+}
+
+.demo-main--doc .demo-examples-grid {
+  gap: 1.25rem;
 }
 
 .demo-example-tabs {
