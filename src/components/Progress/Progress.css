@@ -1,0 +1,73 @@
+.ui-progress {
+  width: 100%;
+  max-width: 28rem;
+}
+
+.ui-progress-label {
+  margin-bottom: var(--ui-spacing-xs);
+  font-size: var(--ui-font-size-sm);
+  font-weight: var(--ui-font-weight-medium);
+  color: var(--ui-muted-foreground);
+}
+
+.ui-progress-track {
+  overflow: hidden;
+  width: 100%;
+  border-radius: 9999px;
+  background: var(--ui-muted);
+}
+
+.ui-progress--sm .ui-progress-track {
+  height: 0.35rem;
+}
+
+.ui-progress--md .ui-progress-track {
+  height: 0.5rem;
+}
+
+.ui-progress--lg .ui-progress-track {
+  height: 0.75rem;
+}
+
+.ui-progress-bar {
+  height: 100%;
+  border-radius: inherit;
+  transition: width var(--ui-transition);
+}
+
+.ui-progress-bar--default {
+  background: linear-gradient(90deg, var(--ui-primary), #6366f1);
+}
+
+.ui-progress-bar--success {
+  background: linear-gradient(90deg, #16a34a, #22c55e);
+}
+
+.ui-progress-bar--warning {
+  background: linear-gradient(90deg, #ca8a04, #eab308);
+}
+
+.ui-progress-bar--danger {
+  background: linear-gradient(90deg, #dc2626, #ef4444);
+}
+
+.ui-progress-bar--striped {
+  background-image: linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0.18) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.18) 50%,
+    rgba(255, 255, 255, 0.18) 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: 1rem 1rem;
+  animation: ui-progress-stripes 0.8s linear infinite;
+}
+
+@keyframes ui-progress-stripes {
+  to {
+    background-position: 1rem 0;
+  }
+}

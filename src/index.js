@@ -39,4 +39,7 @@ export { default as InputGroup } from "./components/InputGroup";
 export { default as InputOTP } from "./components/InputOTP";
 export { default as NavLink } from "./components/NavLink";
 export { default as Navbar } from "./components/Navbar";
+export { default as Progress } from "./components/Progress";
 export { default as Sidebar } from "./components/Sidebar";
+export { default as Spinner } from "./components/Spinner";
+export { default as Tabs } from "./components/Tabs";

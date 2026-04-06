@@ -32,7 +32,10 @@ import {
   InputOTP,
   Navbar,
   NavLink,
+  Progress,
   Sidebar,
+  Spinner,
+  Tabs,
 } from "../index";
 
 /* Simple SVG icons for Button demos (no icon library dependency) */
@@ -318,6 +321,20 @@ export const componentsRegistry = [
           </div>
         ),
       },
+      {
+        id: "loading",
+        title: "Loading state (with Spinner)",
+        code: `<Button variant="primary" disabled leftIcon={<Spinner size="sm" />}>
+  Saving…
+</Button>`,
+        Demo: () => (
+          <div className="demo-flex gap">
+            <Button variant="primary" disabled leftIcon={<Spinner size="sm" label="Saving" />}>
+              Saving…
+            </Button>
+          </div>
+        ),
+      },
     ],
     api: [
       { name: "variant", type: "'primary' | 'secondary' | 'danger' | 'ghost'", default: "'primary'", description: "Button style" },
@@ -579,11 +596,12 @@ export const componentsRegistry = [
   {
     id: "dropdown-menu",
     name: "DropdownMenu",
-    description: "Menu triggered by a button. Supports keyboard navigation.",
+    description:
+      "Menu anchored to a trigger or split button. Supports alignment, drop direction, sizing, dark menus, section headers, dividers, active items, and full keyboard navigation (similar patterns to React-Bootstrap dropdowns).",
     examples: [
       {
         id: "basic",
-        title: "Basic",
+        title: "Single-button dropdown",
         code: `<DropdownMenu
   trigger={<Button variant="secondary">Actions</Button>}
   items={[
@@ -604,18 +622,93 @@ export const componentsRegistry = [
         ),
       },
       {
-        id: "align",
-        title: "Align start / end",
+        id: "split",
+        title: "Split button dropdown",
         code: `<DropdownMenu
-  trigger={<Button variant="secondary">Align end</Button>}
-  items={[{ label: "Item", onClick: () => {} }]}
-  align="end"
-/>
-<DropdownMenu
-  trigger={<Button variant="secondary">Align start</Button>}
-  items={[{ label: "Item", onClick: () => {} }]}
-  align="start"
+  split
+  primaryLabel="Save"
+  onPrimaryClick={() => {}}
+  items={[
+    { label: "Save as draft", onClick: () => {} },
+    { label: "Save and publish", onClick: () => {} },
+  ]}
 />`,
+        Demo: () => (
+          <DropdownMenu
+            split
+            primaryLabel="Save"
+            onPrimaryClick={() => {}}
+            items={[
+              { label: "Save as draft", onClick: () => {} },
+              { label: "Save and publish", onClick: () => {} },
+            ]}
+          />
+        ),
+      },
+      {
+        id: "sizing",
+        title: "Menu sizing",
+        code: `<DropdownMenu size="sm" trigger={<Button size="sm" variant="secondary">Small</Button>} items={[...]} />
+<DropdownMenu size="lg" trigger={<Button size="lg" variant="secondary">Large</Button>} items={[...]} />`,
+        Demo: () => (
+          <div className="demo-flex gap wrap">
+            <DropdownMenu
+              size="sm"
+              trigger={<Button size="sm" variant="secondary">Small menu</Button>}
+              items={[{ label: "Item", onClick: () => {} }]}
+            />
+            <DropdownMenu
+              size="lg"
+              trigger={<Button size="lg" variant="secondary">Large menu</Button>}
+              items={[{ label: "Item", onClick: () => {} }]}
+            />
+          </div>
+        ),
+      },
+      {
+        id: "dark",
+        title: "Dark menu",
+        code: `<DropdownMenu
+  variant="dark"
+  trigger={<Button variant="secondary">Dark</Button>}
+  items={[{ label: "Profile", onClick: () => {} }]}
+/>`,
+        Demo: () => (
+          <DropdownMenu
+            variant="dark"
+            trigger={<Button variant="secondary">Dark menu</Button>}
+            items={[
+              { label: "Profile", onClick: () => {} },
+              { label: "Settings", onClick: () => {} },
+            ]}
+          />
+        ),
+      },
+      {
+        id: "placement",
+        title: "Drop direction (placement)",
+        code: `<DropdownMenu placement="top-start" trigger={...} items={...} />
+<DropdownMenu placement="bottom-end" trigger={...} items={...} />`,
+        Demo: () => (
+          <div className="demo-flex gap wrap" style={{ paddingTop: "4rem", paddingBottom: "4rem" }}>
+            <DropdownMenu
+              placement="top-end"
+              trigger={<Button variant="secondary">Opens upward</Button>}
+              items={[{ label: "Item", onClick: () => {} }]}
+            />
+            <DropdownMenu
+              placement="bottom-start"
+              trigger={<Button variant="secondary">Bottom start</Button>}
+              items={[{ label: "Item", onClick: () => {} }]}
+            />
+          </div>
+        ),
+      },
+      {
+        id: "align",
+        title: "Menu alignment (start / end)",
+        code: `<DropdownMenu align="end" trigger={...} items={...} />
+<DropdownMenu align="start" trigger={...} items={...} />`,
         Demo: () => (
           <div className="demo-flex gap">
             <DropdownMenu
@@ -632,8 +725,34 @@ export const componentsRegistry = [
         ),
       },
       {
+        id: "headers-dividers",
+        title: "Headers, dividers, active & disabled items",
+        code: `<DropdownMenu
+  trigger={<Button variant="secondary">Account</Button>}
+  items={[
+    { type: "header", label: "Signed in as you@example.com" },
+    { label: "Profile", onClick: () => {}, active: true },
+    { type: "divider" },
+    { label: "Sign out", onClick: () => {} },
+    { label: "Disabled", disabled: true },
+  ]}
+/>`,
+        Demo: () => (
+          <DropdownMenu
+            trigger={<Button variant="secondary">Account</Button>}
+            items={[
+              { type: "header", label: "Signed in as you@example.com" },
+              { label: "Profile", onClick: () => {}, active: true },
+              { type: "divider" },
+              { label: "Sign out", onClick: () => {} },
+              { label: "Disabled", disabled: true },
+            ]}
+          />
+        ),
+      },
+      {
         id: "disabled-item",
-        title: "Disabled item",
+        title: "Disabled item (simple)",
         code: `<DropdownMenu
   trigger={<Button variant="secondary">Menu</Button>}
   items={[
@@ -653,9 +772,28 @@ export const componentsRegistry = [
       },
     ],
     api: [
-      { name: "trigger", type: "ReactNode", default: "-", description: "Element that opens the menu" },
-      { name: "items", type: "Array<{label, onClick?, disabled?}>", default: "[]", description: "Menu items" },
-      { name: "align", type: "'start' | 'end'", default: "'end'", description: "Menu alignment" },
+      { name: "trigger", type: "ReactNode", default: "-", description: "Element that opens the menu (not used when split=true)" },
+      {
+        name: "items",
+        type: "Array",
+        default: "[]",
+        description:
+          "Actions: { label, onClick?, disabled?, active? }; section header: { type: 'header', label }; divider: { type: 'divider' }",
+      },
+      { name: "align", type: "'start' | 'end'", default: "'end'", description: "Horizontal alignment when placement is not set" },
+      {
+        name: "placement",
+        type: "'bottom-start' | 'bottom-end' | 'top-start' | 'top-end'",
+        default: "-",
+        description: "Menu position relative to trigger (overrides align-based default)",
+      },
+      { name: "size", type: "'sm' | 'md' | 'lg'", default: "'md'", description: "Menu (and item) density" },
+      { name: "variant", type: "'default' | 'dark'", default: "'default'", description: "Menu surface style" },
+      { name: "split", type: "boolean", default: "false", description: "Split button: primary + caret menu" },
+      { name: "primaryLabel", type: "ReactNode", default: "'Action'", description: "Left segment label when split" },
+      { name: "onPrimaryClick", type: "function", default: "-", description: "Left button handler when split" },
+      { name: "splitButtonSize", type: "'sm' | 'md' | 'lg'", default: "'md'", description: "Size of split controls" },
+      { name: "className", type: "string", default: "''", description: "Class on root" },
     ],
   },
   {
@@ -1387,6 +1525,140 @@ export const componentsRegistry = [
       { id: "basic", title: "Basic", code: `const [code, setCode] = useState("");\n<InputOTP length={6} value={code} onChange={setCode} />`, Demo: () => { const [c, setC] = useState(""); return <InputOTP length={6} value={c} onChange={setC} />; } },
     ],
     api: [],
+  },
+  {
+    id: "progress",
+    name: "Progress",
+    description:
+      "Linear progress bar with semantic progressbar role, optional label, color variants, and animated stripes—similar to Bootstrap progress.",
+    examples: [
+      {
+        id: "basic",
+        title: "Values and labels",
+        code: `<Progress value={40} max={100} showLabel />
+<Progress value={75} variant="success" />
+<Progress value={30} variant="warning" striped />`,
+        Demo: () => (
+          <div className="demo-stack">
+            <Progress value={40} showLabel />
+            <Progress value={75} variant="success" />
+            <Progress value={30} variant="warning" striped />
+            <Progress value={90} variant="danger" size="lg" />
+          </div>
+        ),
+      },
+      {
+        id: "sizes",
+        title: "Sizes",
+        code: `<Progress value={50} size="sm" />
+<Progress value={50} size="md" />
+<Progress value={50} size="lg" />`,
+        Demo: () => (
+          <div className="demo-stack">
+            <Progress value={50} size="sm" />
+            <Progress value={50} size="md" />
+            <Progress value={50} size="lg" />
+          </div>
+        ),
+      },
+    ],
+    api: [
+      { name: "value", type: "number", default: "0", description: "Current value" },
+      { name: "max", type: "number", default: "100", description: "Maximum value" },
+      { name: "variant", type: "'default' | 'success' | 'warning' | 'danger'", default: "'default'", description: "Bar color" },
+      { name: "size", type: "'sm' | 'md' | 'lg'", default: "'md'", description: "Track height" },
+      { name: "striped", type: "boolean", default: "false", description: "Animated stripes" },
+      { name: "showLabel", type: "boolean", default: "false", description: "Show percentage above bar" },
+      { name: "className", type: "string", default: "''", description: "Extra class" },
+    ],
+  },
+  {
+    id: "spinner",
+    name: "Spinner",
+    description: "Inline loading indicator for buttons, cards, and async UI (similar to Bootstrap spinners).",
+    examples: [
+      {
+        id: "sizes",
+        title: "Sizes",
+        code: `<Spinner size="sm" />
+<Spinner size="md" />
+<Spinner size="lg" label="Loading" />`,
+        Demo: () => (
+          <div className="demo-flex gap wrap" style={{ alignItems: "center" }}>
+            <Spinner size="sm" />
+            <Spinner size="md" />
+            <Spinner size="lg" label="Loading content" />
+          </div>
+        ),
+      },
+      {
+        id: "with-button",
+        title: "With button",
+        code: `<Button disabled leftIcon={<Spinner size="sm" />}>Please wait</Button>`,
+        Demo: () => (
+          <Button variant="secondary" disabled leftIcon={<Spinner size="sm" />}>
+            Please wait
+          </Button>
+        ),
+      },
+    ],
+    api: [
+      { name: "size", type: "'sm' | 'md' | 'lg'", default: "'md'", description: "Spinner dimensions" },
+      { name: "label", type: "string", default: "-", description: "Sets role=status and aria-label when provided" },
+      { name: "className", type: "string", default: "''", description: "Extra class" },
+    ],
+  },
+  {
+    id: "tabs",
+    name: "Tabs",
+    description:
+      "Accessible tab list and panels with arrow-key navigation between tabs (WAI-ARIA tabs pattern, similar to React-Bootstrap nav tabs).",
+    examples: [
+      {
+        id: "basic",
+        title: "Basic tabs",
+        code: `<Tabs
+  items={[
+    { id: "home", label: "Home", panel: <p>Home content</p> },
+    { id: "profile", label: "Profile", panel: <p>Profile content</p> },
+  ]}
+/>`,
+        Demo: () => (
+          <Tabs
+            items={[
+              { id: "home", label: "Home", panel: <p>Welcome home.</p> },
+              { id: "profile", label: "Profile", panel: <p>Your profile settings.</p> },
+              { id: "contact", label: "Contact", panel: <p>Get in touch.</p> },
+            ]}
+          />
+        ),
+      },
+      {
+        id: "default-tab",
+        title: "Default selected tab",
+        code: `<Tabs defaultTabId="profile" items={[...]} />`,
+        Demo: () => (
+          <Tabs
+            defaultTabId="profile"
+            items={[
+              { id: "home", label: "Home", panel: <p>Home</p> },
+              { id: "profile", label: "Profile", panel: <p>Profile opens first.</p> },
+            ]}
+          />
+        ),
+      },
+    ],
+    api: [
+      {
+        name: "items",
+        type: "Array<{ id, label, panel }>",
+        default: "[]",
+        description: "Tab definitions; panel is ReactNode for the tab content",
+      },
+      { name: "defaultTabId", type: "string", default: "-", description: "Initially selected tab id" },
+      { name: "onTabChange", type: "(id: string) => void", default: "-", description: "Called when selection changes" },
+      { name: "className", type: "string", default: "''", description: "Root class" },
+    ],
   },
 ];
 
