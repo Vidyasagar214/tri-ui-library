@@ -10,6 +10,17 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600..800;1,9..144,600..800&family=JetBrains+Mono:ital,wght@0,400..500;1,400..500&family=Plus+Jakarta+Sans:ital,wght@0,400..700;1,400..700&display=swap"
       rel="stylesheet"
     />
+    <script>
+      (function () {
+        try {
+          var k = "tri-ui-demo-theme";
+          var t = localStorage.getItem(k);
+          if (t === "dark" || t === "light") document.documentElement.setAttribute("data-theme", t);
+          else if (window.matchMedia("(prefers-color-scheme: dark)").matches)
+            document.documentElement.setAttribute("data-theme", "dark");
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

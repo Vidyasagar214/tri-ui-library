@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Routes, Route, Link, useLocation } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import HomePage from "./pages/HomePage";
@@ -7,9 +8,21 @@ import ExamplesGalleryPage from "./pages/ExamplesGalleryPage";
 import ExampleLayoutDetailPage from "./pages/ExampleLayoutDetailPage";
 import { PACKAGE_VERSION, GITHUB_REPO_URL } from "./siteMeta";
 import DemoFooter from "./components/DemoFooter";
+import DemoFeedbackDialog, { DemoFeedbackNavTriggers } from "./components/DemoFeedbackDialog";
+import DemoThemeToggle from "./components/DemoThemeToggle";
 import triLogoImg from "./assets/tri-img.png";
 import "./demo.css";
 import "./demo-examples.css";
+import "./demo-theme.css";
+
+const THEME_STORAGE_KEY = "tri-ui-demo-theme";
+
+function readStoredTheme() {
+  if (typeof window === "undefined") return "light";
+  const s = localStorage.getItem(THEME_STORAGE_KEY);
+  if (s === "light" || s === "dark") return s;
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
 
 function GitHubMark() {
   return (
@@ -39,6 +52,25 @@ function ExternalTabIcon() {
 
 function App() {
   const { pathname } = useLocation();
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const [feedbackSentiment, setFeedbackSentiment] = useState(null);
+  const [theme, setTheme] = useState(readStoredTheme);
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, theme);
+    } catch {
+      /* ignore */
+    }
+  }, [theme]);
+
+  const toggleTheme = () => setTheme((t) => (t === "light" ? "dark" : "light"));
+
+  const openFeedback = (kind) => {
+    setFeedbackSentiment(kind === "up" ? "positive" : "negative");
+    setFeedbackOpen(true);
+  };
   const isLanding = pathname === "/";
   const componentsNavActive =
     pathname === "/components" || pathname.startsWith("/components/");
@@ -70,6 +102,7 @@ function App() {
           </Link>
           {isLanding ? (
             <div className="demo-nav-landing-right">
+              <DemoFeedbackNavTriggers onOpen={openFeedback} />
               <span className="demo-nav-version-pill" title={`npm package v${PACKAGE_VERSION}`}>
                 v{PACKAGE_VERSION}
               </span>
@@ -83,21 +116,26 @@ function App() {
                 <span>GitHub</span>
                 <ExternalTabIcon />
               </a>
+              <DemoThemeToggle theme={theme} onToggle={toggleTheme} />
             </div>
           ) : (
-            <div className="demo-nav-links">
-              <Link
-                to="/components"
-                className={`demo-nav-link${componentsNavActive ? " demo-nav-link--active" : ""}`}
-              >
-                Components
-              </Link>
-              <Link
-                to="/examples"
-                className={`demo-nav-link${examplesNavActive ? " demo-nav-link--active" : ""}`}
-              >
-                Examples
-              </Link>
+            <div className="demo-nav-end">
+              <DemoFeedbackNavTriggers onOpen={openFeedback} />
+              <div className="demo-nav-links">
+                <Link
+                  to="/components"
+                  className={`demo-nav-link${componentsNavActive ? " demo-nav-link--active" : ""}`}
+                >
+                  Components
+                </Link>
+                <Link
+                  to="/examples"
+                  className={`demo-nav-link${examplesNavActive ? " demo-nav-link--active" : ""}`}
+                >
+                  Examples
+                </Link>
+              </div>
+              <DemoThemeToggle theme={theme} onToggle={toggleTheme} />
             </div>
           )}
         </div>
@@ -115,6 +153,12 @@ function App() {
         </Routes>
       </main>
       <DemoFooter />
+      <DemoFeedbackDialog
+        open={feedbackOpen}
+        onClose={() => setFeedbackOpen(false)}
+        initialSentiment={feedbackSentiment}
+        pagePath={pathname}
+      />
     </div>
   );
 }
