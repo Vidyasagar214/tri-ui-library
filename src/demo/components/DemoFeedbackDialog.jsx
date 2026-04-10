@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Dialog } from "../../index";
-import { saveDemoFeedback } from "../feedbackStorage";
+import { submitDemoFeedback } from "../feedbackStorage";
 
 function ThumbUpIcon({ className }) {
   return (
@@ -27,28 +27,20 @@ function ThumbDownIcon({ className }) {
 }
 
 /**
- * Navbar controls: two icon buttons that open the same feedback dialog.
+ * Navbar control: one button with thumb-up and thumb-down icons (no gap); opens the feedback dialog.
  */
 export function DemoFeedbackNavTriggers({ onOpen }) {
   return (
     <div className="demo-nav-feedback">
       <button
         type="button"
-        className="demo-nav-feedback-btn demo-nav-feedback-btn--up"
-        onClick={() => onOpen("up")}
-        aria-label="Give positive feedback"
+        className="demo-nav-feedback-btn"
+        onClick={() => onOpen?.()}
+        aria-label="Open feedback form"
         title="Feedback"
       >
-        <ThumbUpIcon className="demo-nav-feedback-icon" />
-      </button>
-      <button
-        type="button"
-        className="demo-nav-feedback-btn demo-nav-feedback-btn--down"
-        onClick={() => onOpen("down")}
-        aria-label="Give negative feedback"
-        title="Feedback"
-      >
-        <ThumbDownIcon className="demo-nav-feedback-icon" />
+        <ThumbUpIcon className="demo-nav-feedback-icon demo-nav-feedback-icon--up" />
+        <ThumbDownIcon className="demo-nav-feedback-icon demo-nav-feedback-icon--down" />
       </button>
     </div>
   );
@@ -57,7 +49,7 @@ export function DemoFeedbackNavTriggers({ onOpen }) {
 const STAR_COUNT = 5;
 
 /**
- * Modal: star rating, user email, additional comments; saves via saveDemoFeedback.
+ * Modal: star rating, user email, additional comments; submits to MockAPI via submitDemoFeedback.
  */
 const TOAST_MS = 10_000;
 
@@ -74,17 +66,19 @@ function FeedbackToast({ toast }) {
   );
 }
 
-export default function DemoFeedbackDialog({ open, onClose, initialSentiment, pagePath }) {
-  const [rating, setRating] = useState(4);
+export default function DemoFeedbackDialog({ open, onClose }) {
+  const [rating, setRating] = useState(0);
   const [email, setEmail] = useState("");
   const [comments, setComments] = useState("");
   const [toast, setToast] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (open) {
-      setRating(4);
+      setRating(0);
       setEmail("");
       setComments("");
+      setIsSubmitting(false);
     }
   }, [open]);
 
@@ -98,7 +92,7 @@ export default function DemoFeedbackDialog({ open, onClose, initialSentiment, pa
     setToast({ type, message });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const trimmed = email.trim();
     if (!trimmed) {
@@ -109,19 +103,27 @@ export default function DemoFeedbackDialog({ open, onClose, initialSentiment, pa
       showToast("error", "Please enter a valid email address.");
       return;
     }
-    const saved = saveDemoFeedback({
-      sentiment: initialSentiment,
-      rating,
-      email: trimmed,
-      comments: comments.trim(),
-      pagePath: pagePath || (typeof window !== "undefined" ? window.location.pathname : ""),
-    });
-    if (!saved) {
-      showToast("error", "We couldn’t save your feedback. Check browser storage settings and try again.");
-      return;
+    setIsSubmitting(true);
+    try {
+      const result = await submitDemoFeedback({
+        rating,
+        email: trimmed,
+        comments: comments.trim(),
+      });
+      if (!result.ok) {
+        showToast(
+          "error",
+          result.error
+            ? `We couldn’t send your feedback: ${result.error}`
+            : "We couldn’t send your feedback. Please try again."
+        );
+        return;
+      }
+      onClose();
+      showToast("success", "Thanks! Your feedback was submitted successfully.");
+    } finally {
+      setIsSubmitting(false);
     }
-    onClose();
-    showToast("success", "Thanks! Your feedback was submitted successfully.");
   };
 
   return (
@@ -146,11 +148,17 @@ export default function DemoFeedbackDialog({ open, onClose, initialSentiment, pa
               );
             })}
           </div>
-          <span className="demo-feedback-stars-label">{rating}/{STAR_COUNT} stars</span>
+          <span className="demo-feedback-stars-label">
+            {rating === 0 ? `No rating selected (0 / ${STAR_COUNT})` : `${rating} / ${STAR_COUNT} stars`}
+          </span>
         </div>
 
         <label className="demo-feedback-label" htmlFor="demo-feedback-email">
-          User email
+          <span className="demo-feedback-label-text">User email</span>
+          <span className="demo-feedback-required" aria-hidden="true">
+            {" "}
+            *
+          </span>
         </label>
         <input
           id="demo-feedback-email"
@@ -160,10 +168,13 @@ export default function DemoFeedbackDialog({ open, onClose, initialSentiment, pa
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           autoComplete="email"
+          required
+          aria-required="true"
         />
 
         <label className="demo-feedback-label" htmlFor="demo-feedback-comments">
-          Additional feedback
+          <span className="demo-feedback-label-text">Additional feedback</span>
+          <span className="demo-feedback-optional"> (optional)</span>
         </label>
         <textarea
           id="demo-feedback-comments"
@@ -174,8 +185,8 @@ export default function DemoFeedbackDialog({ open, onClose, initialSentiment, pa
           onChange={(e) => setComments(e.target.value)}
         />
 
-        <button type="submit" className="demo-feedback-submit">
-          Submit feedback
+        <button type="submit" className="demo-feedback-submit" disabled={isSubmitting}>
+          {isSubmitting ? "Submitting…" : "Submit feedback"}
         </button>
       </form>
     </Dialog>

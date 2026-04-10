@@ -11,6 +11,7 @@ import {
   ButtonGroup,
   Calendar,
   Card,
+  CardGroup,
   Carousel,
   Chart,
   Checkbox,
@@ -65,6 +66,13 @@ const DEMO_NAVBAR_LOGO_SRC =
   "data:image/svg+xml," +
   encodeURIComponent(
     '<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36"><rect width="36" height="36" rx="8" fill="%232563eb"/></svg>'
+  );
+
+/** Demo-only placeholder for Card image examples */
+const DEMO_CARD_PLACEHOLDER_IMG =
+  "data:image/svg+xml," +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="286" height="180" viewBox="0 0 286 180"><rect fill="%23e2e8f0" width="286" height="180"/><text x="143" y="90" dominant-baseline="middle" text-anchor="middle" fill="%2394a3b8" font-family="system-ui,sans-serif" font-size="14">286×180</text></svg>'
   );
 
 /** Default installation snippet for any component */
@@ -395,67 +403,364 @@ export const componentsRegistry = [
   {
     id: "card",
     name: "Card",
-    description: "Content container with optional title and footer.",
+    description:
+      "Flexible content container with compound pieces (header, body, footer, image caps, list group, links) plus CardGroup and grid layout. Legacy props title and footer still wrap children in a body.",
     examples: [
       {
         id: "basic",
-        title: "Basic",
+        title: "Basic example",
         code: `<Card>
-  <p>Simple card with no title or footer.</p>
+  <Card.Body>
+    <Card.Text>This is a basic card with only a body.</Card.Text>
+  </Card.Body>
 </Card>`,
         Demo: () => (
           <Card>
-            <p>Simple card with no title or footer.</p>
+            <Card.Body>
+              <Card.Text>This is a basic card with only a body.</Card.Text>
+            </Card.Body>
           </Card>
         ),
       },
       {
-        id: "outlined",
-        title: "Outlined",
-        code: `<Card variant="outlined" title="Outlined card">
-  <p>Default variant with border.</p>
+        id: "body",
+        title: "Content types — Body",
+        code: `<Card variant="outlined">
+  <Card.Body>Arbitrary content inside Card.Body.</Card.Body>
 </Card>`,
         Demo: () => (
-          <Card variant="outlined" title="Outlined card">
-            <p>Default variant with border.</p>
+          <Card variant="outlined">
+            <Card.Body>Arbitrary content inside Card.Body.</Card.Body>
           </Card>
+        ),
+      },
+      {
+        id: "title-text-links",
+        title: "Title, text, and links",
+        code: `<Card variant="outlined">
+  <Card.Body>
+    <Card.Title>Card title</Card.Title>
+    <Card.Subtitle>Subtitle</Card.Subtitle>
+    <Card.Text>Supporting copy for the card.</Card.Text>
+    <Card.Link href="#">Link</Card.Link>
+    <Card.Link href="#">Another link</Card.Link>
+  </Card.Body>
+</Card>`,
+        Demo: () => (
+          <Card variant="outlined">
+            <Card.Body>
+              <Card.Title>Card title</Card.Title>
+              <Card.Subtitle>Subtitle</Card.Subtitle>
+              <Card.Text>Supporting copy for the card.</Card.Text>
+              <Card.Link href="#">Link</Card.Link>
+              <Card.Link href="#">Another link</Card.Link>
+            </Card.Body>
+          </Card>
+        ),
+      },
+      {
+        id: "list-group",
+        title: "List group",
+        code: `<Card variant="outlined">
+  <Card.Body>
+    <Card.Title>Featured</Card.Title>
+    <Card.Text>With a list below.</Card.Text>
+  </Card.Body>
+  <Card.ListGroup>
+    <Card.ListGroupItem>An item</Card.ListGroupItem>
+    <Card.ListGroupItem>A second item</Card.ListGroupItem>
+    <Card.ListGroupItem>A third item</Card.ListGroupItem>
+  </Card.ListGroup>
+</Card>`,
+        Demo: () => (
+          <Card variant="outlined">
+            <Card.Body>
+              <Card.Title>Featured</Card.Title>
+              <Card.Text>With a list below.</Card.Text>
+            </Card.Body>
+            <Card.ListGroup>
+              <Card.ListGroupItem>An item</Card.ListGroupItem>
+              <Card.ListGroupItem>A second item</Card.ListGroupItem>
+              <Card.ListGroupItem>A third item</Card.ListGroupItem>
+            </Card.ListGroup>
+          </Card>
+        ),
+      },
+      {
+        id: "kitchen-sink",
+        title: "Kitchen sink",
+        code: `<Card variant="outlined">
+  <Card.Img src={img} alt="" position="top" />
+  <Card.Body>
+    <Card.Title>Kitchen sink</Card.Title>
+    <Card.Text>Mixed image, body, list, links, and footer.</Card.Text>
+  </Card.Body>
+  <Card.ListGroup>...</Card.ListGroup>
+  <Card.Body>
+    <Card.Link href="#">Link</Card.Link>
+  </Card.Body>
+  <Card.Footer>Footer</Card.Footer>
+</Card>`,
+        Demo: () => (
+          <Card variant="outlined">
+            <Card.Img src={DEMO_CARD_PLACEHOLDER_IMG} alt="" position="top" />
+            <Card.Body>
+              <Card.Title>Kitchen sink</Card.Title>
+              <Card.Text>Mixed image, body, list, links, and footer.</Card.Text>
+            </Card.Body>
+            <Card.ListGroup>
+              <Card.ListGroupItem>Cras justo odio</Card.ListGroupItem>
+              <Card.ListGroupItem>Dapibus ac facilisis in</Card.ListGroupItem>
+              <Card.ListGroupItem>Vestibulum at eros</Card.ListGroupItem>
+            </Card.ListGroup>
+            <Card.Body>
+              <Card.Link href="#">Card link</Card.Link>
+              <Card.Link href="#">Another link</Card.Link>
+            </Card.Body>
+            <Card.Footer>Last updated 3 mins ago</Card.Footer>
+          </Card>
+        ),
+      },
+      {
+        id: "header-footer",
+        title: "Header and footer",
+        code: `<Card variant="outlined">
+  <Card.Header>
+    <Card.Title as="h3">Header</Card.Title>
+  </Card.Header>
+  <Card.Body>Main content.</Card.Body>
+  <Card.Footer>Footer</Card.Footer>
+</Card>`,
+        Demo: () => (
+          <Card variant="outlined">
+            <Card.Header>
+              <Card.Title as="h3">Header</Card.Title>
+            </Card.Header>
+            <Card.Body>Main content.</Card.Body>
+            <Card.Footer>Footer</Card.Footer>
+          </Card>
+        ),
+      },
+      {
+        id: "legacy-title-footer",
+        title: "Legacy title and footer",
+        code: `<Card title="Title" footer={<Button variant="primary">Action</Button>}>
+  <p>Children render inside an implicit body.</p>
+</Card>`,
+        Demo: () => (
+          <Card title="Title" footer={<Button variant="primary">Action</Button>}>
+            <p>Children render inside an implicit body.</p>
+          </Card>
+        ),
+      },
+      {
+        id: "image-cap-top",
+        title: "Images — Image cap (top)",
+        code: `<Card variant="outlined">
+  <Card.Img src={img} alt="Cap" position="top" />
+  <Card.Body>
+    <Card.Title>Title</Card.Title>
+    <Card.Text>Text below the image.</Card.Text>
+  </Card.Body>
+</Card>`,
+        Demo: () => (
+          <Card variant="outlined">
+            <Card.Img src={DEMO_CARD_PLACEHOLDER_IMG} alt="Cap" position="top" />
+            <Card.Body>
+              <Card.Title>Title</Card.Title>
+              <Card.Text>Text below the image.</Card.Text>
+            </Card.Body>
+          </Card>
+        ),
+      },
+      {
+        id: "image-cap-bottom",
+        title: "Images — Image cap (bottom)",
+        code: `<Card variant="outlined">
+  <Card.Body>...</Card.Body>
+  <Card.Img src={img} alt="Cap" position="bottom" />
+</Card>`,
+        Demo: () => (
+          <Card variant="outlined">
+            <Card.Body>
+              <Card.Title>Title</Card.Title>
+              <Card.Text>Image is placed after the body.</Card.Text>
+            </Card.Body>
+            <Card.Img src={DEMO_CARD_PLACEHOLDER_IMG} alt="Cap" position="bottom" />
+          </Card>
+        ),
+      },
+      {
+        id: "image-overlay",
+        title: "Images — Image overlay",
+        code: `<Card variant="outlined">
+  <Card.ImgOverlayWrap>
+    <Card.Img src={img} alt="" />
+    <Card.ImgOverlay>
+      <Card.Title as="h3">Overlay title</Card.Title>
+      <Card.Text>Text on top of the image.</Card.Text>
+    </Card.ImgOverlay>
+  </Card.ImgOverlayWrap>
+</Card>`,
+        Demo: () => (
+          <Card variant="outlined">
+            <Card.ImgOverlayWrap>
+              <Card.Img src={DEMO_CARD_PLACEHOLDER_IMG} alt="" />
+              <Card.ImgOverlay>
+                <Card.Title as="h3">Overlay title</Card.Title>
+                <Card.Text>Text on top of the image.</Card.Text>
+              </Card.ImgOverlay>
+            </Card.ImgOverlayWrap>
+          </Card>
+        ),
+      },
+      {
+        id: "header-nav",
+        title: "Navigation",
+        code: `<Card variant="outlined">
+  <Card.Header>
+    <nav className="ui-card-nav" aria-label="Card tabs">
+      <button type="button" className="ui-card-nav-link ui-card-nav-link--active">Active</button>
+      <button type="button" className="ui-card-nav-link">Link</button>
+      <button type="button" className="ui-card-nav-link">Link</button>
+    </nav>
+  </Card.Header>
+  <Card.Body>Tab-style navigation in the header.</Card.Body>
+</Card>`,
+        Demo: () => (
+          <Card variant="outlined">
+            <Card.Header>
+              <nav className="ui-card-nav" aria-label="Card tabs">
+                <button type="button" className="ui-card-nav-link ui-card-nav-link--active">
+                  Active
+                </button>
+                <button type="button" className="ui-card-nav-link">
+                  Link
+                </button>
+                <button type="button" className="ui-card-nav-link">
+                  Link
+                </button>
+              </nav>
+            </Card.Header>
+            <Card.Body>Tab-style navigation in the header.</Card.Body>
+          </Card>
+        ),
+      },
+      {
+        id: "styles-bg",
+        title: "Card styles — Background color",
+        code: `<Card variant="outlined" color="primary">...</Card>
+<Card variant="outlined" color="success">...</Card>`,
+        Demo: () => (
+          <div className="demo-stack" style={{ maxWidth: "28rem" }}>
+            <Card variant="outlined" color="primary">
+              <Card.Body>
+                <Card.Title as="h3">Primary</Card.Title>
+                <Card.Text>Contextual background on the root Card.</Card.Text>
+              </Card.Body>
+            </Card>
+            <Card variant="outlined" color="success">
+              <Card.Body>
+                <Card.Title as="h3">Success</Card.Title>
+                <Card.Text>color maps to theme tokens.</Card.Text>
+              </Card.Body>
+            </Card>
+          </div>
+        ),
+      },
+      {
+        id: "styles-border",
+        title: "Card styles — Border color",
+        code: `<Card variant="outlined" borderColor="primary">...</Card>
+<Card variant="outlined" borderColor="danger">...</Card>`,
+        Demo: () => (
+          <div className="demo-stack" style={{ maxWidth: "28rem" }}>
+            <Card variant="outlined" borderColor="primary">
+              <Card.Body>
+                <Card.Title as="h3">Primary border</Card.Title>
+                <Card.Text>borderColor on the root Card.</Card.Text>
+              </Card.Body>
+            </Card>
+            <Card variant="outlined" borderColor="danger">
+              <Card.Body>
+                <Card.Title as="h3">Danger border</Card.Title>
+                <Card.Text>2px solid emphasis.</Card.Text>
+              </Card.Body>
+            </Card>
+          </div>
         ),
       },
       {
         id: "elevated",
-        title: "Elevated",
-        code: `<Card variant="elevated" title="Elevated card">
-  <p>Uses shadow instead of border.</p>
+        title: "Elevated variant",
+        code: `<Card variant="elevated" title="Elevated">
+  <p>Shadow instead of a strong border.</p>
 </Card>`,
         Demo: () => (
-          <Card variant="elevated" title="Elevated card">
-            <p>Uses shadow instead of border.</p>
+          <Card variant="elevated" title="Elevated">
+            <p>Shadow instead of a strong border.</p>
           </Card>
         ),
       },
       {
-        id: "with-footer",
-        title: "With header and footer",
-        code: `<Card
-  title="Card title"
-  footer={<Button variant="primary">Action</Button>}
->
-  <p>Body content goes here.</p>
-</Card>`,
+        id: "card-group",
+        title: "Card layout — Card group",
+        code: `<CardGroup>
+  <Card variant="outlined"><Card.Body>One</Card.Body></Card>
+  <Card variant="outlined"><Card.Body>Two</Card.Body></Card>
+  <Card variant="outlined"><Card.Body>Three</Card.Body></Card>
+</CardGroup>`,
         Demo: () => (
-          <Card
-            title="Card title"
-            footer={<Button variant="primary">Action</Button>}
-          >
-            <p>Body content goes here.</p>
-          </Card>
+          <CardGroup>
+            <Card variant="outlined">
+              <Card.Body>One</Card.Body>
+            </Card>
+            <Card variant="outlined">
+              <Card.Body>Two</Card.Body>
+            </Card>
+            <Card variant="outlined">
+              <Card.Body>Three</Card.Body>
+            </Card>
+          </CardGroup>
+        ),
+      },
+      {
+        id: "card-grid",
+        title: "Card layout — Grid",
+        code: `<div className="ui-card-grid">
+  <Card variant="outlined"><Card.Body>A</Card.Body></Card>
+  <Card variant="outlined"><Card.Body>B</Card.Body></Card>
+  <Card variant="outlined"><Card.Body>C</Card.Body></Card>
+</div>`,
+        Demo: () => (
+          <div className="ui-card-grid">
+            <Card variant="outlined">
+              <Card.Body>Grid cell A</Card.Body>
+            </Card>
+            <Card variant="outlined">
+              <Card.Body>Grid cell B</Card.Body>
+            </Card>
+            <Card variant="outlined">
+              <Card.Body>Grid cell C</Card.Body>
+            </Card>
+          </div>
         ),
       },
     ],
     api: [
-      { name: "title", type: "ReactNode", default: "-", description: "Optional header title" },
-      { name: "footer", type: "ReactNode", default: "-", description: "Optional footer content" },
-      { name: "variant", type: "'outlined' | 'elevated'", default: "'outlined'", description: "Card style" },
+      { name: "Card", type: "component", default: "-", description: "Root container; use with compound pieces or legacy title/footer." },
+      { name: "title", type: "ReactNode", default: "-", description: "Legacy: renders header + wraps children in Card.Body." },
+      { name: "footer", type: "ReactNode", default: "-", description: "Legacy: footer below the implicit body." },
+      { name: "variant", type: "'outlined' | 'elevated'", default: "'outlined'", description: "Border/shadow style." },
+      { name: "color", type: "'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light' | 'dark'", default: "-", description: "Contextual background on the root card." },
+      { name: "borderColor", type: "'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info'", default: "-", description: "2px border emphasis (works with outlined)." },
+      { name: "Card.Header / Body / Footer", type: "components", default: "-", description: "Structural regions; compose in any order with images and list groups." },
+      { name: "Card.Title / Subtitle / Text / Link", type: "components", default: "-", description: "Typography and links inside the body or overlay." },
+      { name: "Card.Img", type: "component", default: "position: 'top'", description: "Full-width cap; use position top or bottom for corner rounding." },
+      { name: "Card.ImgOverlayWrap + Card.ImgOverlay", type: "components", default: "-", description: "Wrap image + overlay content for text on top of media." },
+      { name: "Card.ListGroup / ListGroupItem", type: "components", default: "-", description: "Flush list block inside the card." },
+      { name: "CardGroup / Card.Group", type: "component", default: "-", description: "Attached horizontal row of cards (stacks on small screens)." },
+      { name: ".ui-card-grid", type: "CSS class", default: "-", description: "Optional responsive grid wrapper for multiple cards." },
     ],
   },
   {

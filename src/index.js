@@ -17,7 +17,7 @@ export { default as Breadcrumb } from "./components/Breadcrumb";
 export { default as Button } from "./components/Button";
 export { default as ButtonGroup } from "./components/ButtonGroup";
 export { default as Calendar } from "./components/Calendar";
-export { default as Card } from "./components/Card";
+export { default as Card, CardGroup } from "./components/Card";
 export { default as Carousel } from "./components/Carousel";
 export { default as Chart } from "./components/Chart";
 export { default as Checkbox } from "./components/Checkbox";

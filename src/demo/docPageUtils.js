@@ -79,3 +79,20 @@ export function buildOnThisPageNav(examples, hasApi) {
   }
   return items;
 }
+
+/**
+ * Document order of element ids for scroll-spy (matches main column structure).
+ */
+export function getOnThisPageScrollIds(items) {
+  if (!items?.length) return [];
+  const ids = [];
+  for (const item of items) {
+    ids.push(item.id);
+    if (item.children?.length) {
+      for (const child of item.children) {
+        ids.push(child.id);
+      }
+    }
+  }
+  return ids;
+}

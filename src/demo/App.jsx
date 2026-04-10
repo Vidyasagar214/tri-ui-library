@@ -6,6 +6,7 @@ import InstallationPage from "./pages/InstallationPage";
 import ComponentDetailPage from "./pages/ComponentDetailPage";
 import ExamplesGalleryPage from "./pages/ExamplesGalleryPage";
 import ExampleLayoutDetailPage from "./pages/ExampleLayoutDetailPage";
+import UsersFeedbacksPage from "./pages/UsersFeedbacksPage";
 import { PACKAGE_VERSION, GITHUB_REPO_URL } from "./siteMeta";
 import DemoFooter from "./components/DemoFooter";
 import DemoFeedbackDialog, { DemoFeedbackNavTriggers } from "./components/DemoFeedbackDialog";
@@ -53,7 +54,6 @@ function ExternalTabIcon() {
 function App() {
   const { pathname } = useLocation();
   const [feedbackOpen, setFeedbackOpen] = useState(false);
-  const [feedbackSentiment, setFeedbackSentiment] = useState(null);
   const [theme, setTheme] = useState(readStoredTheme);
 
   useEffect(() => {
@@ -67,10 +67,7 @@ function App() {
 
   const toggleTheme = () => setTheme((t) => (t === "light" ? "dark" : "light"));
 
-  const openFeedback = (kind) => {
-    setFeedbackSentiment(kind === "up" ? "positive" : "negative");
-    setFeedbackOpen(true);
-  };
+  const openFeedback = () => setFeedbackOpen(true);
   const isLanding = pathname === "/";
   const componentsNavActive =
     pathname === "/components" || pathname.startsWith("/components/");
@@ -80,7 +77,8 @@ function App() {
     pathname === "/components" ||
     pathname.startsWith("/components/") ||
     pathname === "/examples" ||
-    pathname.startsWith("/examples/");
+    pathname.startsWith("/examples/") ||
+    pathname === "/users-feedbacks";
 
   return (
     <div
@@ -150,15 +148,11 @@ function App() {
           <Route path="/components/:id" element={<ComponentDetailPage />} />
           <Route path="/examples" element={<ExamplesGalleryPage />} />
           <Route path="/examples/:id" element={<ExampleLayoutDetailPage />} />
+          <Route path="/users-feedbacks" element={<UsersFeedbacksPage />} />
         </Routes>
       </main>
       <DemoFooter />
-      <DemoFeedbackDialog
-        open={feedbackOpen}
-        onClose={() => setFeedbackOpen(false)}
-        initialSentiment={feedbackSentiment}
-        pagePath={pathname}
-      />
+      <DemoFeedbackDialog open={feedbackOpen} onClose={() => setFeedbackOpen(false)} />
     </div>
   );
 }

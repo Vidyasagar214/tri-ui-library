@@ -1,7 +1,12 @@
 import { useParams, Link } from "react-router-dom";
 import { getComponentById } from "../componentsRegistry";
-import { useState, useCallback } from "react";
-import { buildOnThisPageNav, getAccessibilityBody, getOverviewExtra } from "../docPageUtils";
+import { useState, useCallback, useEffect, useMemo } from "react";
+import {
+  buildOnThisPageNav,
+  getAccessibilityBody,
+  getOverviewExtra,
+  getOnThisPageScrollIds,
+} from "../docPageUtils";
 
 const defaultInstall = "npm install tri-ui-library";
 
@@ -38,7 +43,7 @@ ${code}`;
   );
 }
 
-function OnThisPageNav({ items, scrollTo }) {
+function OnThisPageNav({ items, scrollTo, activeId }) {
   return (
     <ul className="demo-on-this-page-list">
       {items.map((item) => (
@@ -47,8 +52,14 @@ function OnThisPageNav({ items, scrollTo }) {
             <>
               <button
                 type="button"
-                className="demo-on-this-page-link"
+                className={[
+                  "demo-on-this-page-link",
+                  activeId === item.id ? "demo-on-this-page-link--active" : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
                 onClick={() => scrollTo(item.id)}
+                aria-current={activeId === item.id ? "location" : undefined}
               >
                 {item.label}
               </button>
@@ -57,8 +68,15 @@ function OnThisPageNav({ items, scrollTo }) {
                   <li key={child.id}>
                     <button
                       type="button"
-                      className="demo-on-this-page-link demo-on-this-page-link--sub"
+                      className={[
+                        "demo-on-this-page-link",
+                        "demo-on-this-page-link--sub",
+                        activeId === child.id ? "demo-on-this-page-link--active" : "",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
                       onClick={() => scrollTo(child.id)}
+                      aria-current={activeId === child.id ? "location" : undefined}
                     >
                       {child.label}
                     </button>
@@ -67,7 +85,17 @@ function OnThisPageNav({ items, scrollTo }) {
               </ul>
             </>
           ) : (
-            <button type="button" className="demo-on-this-page-link" onClick={() => scrollTo(item.id)}>
+            <button
+              type="button"
+              className={[
+                "demo-on-this-page-link",
+                activeId === item.id ? "demo-on-this-page-link--active" : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+              onClick={() => scrollTo(item.id)}
+              aria-current={activeId === item.id ? "location" : undefined}
+            >
               {item.label}
             </button>
           )}
@@ -99,17 +127,79 @@ function ComponentDetailPage() {
     );
   }
 
-  const examples = comp.examples || [];
+  const rawExamples = comp.examples;
   const api = comp.api || [];
   const hasApi = api.length > 0;
-  const navItems = buildOnThisPageNav(examples, hasApi);
+  const navItems = useMemo(() => buildOnThisPageNav(rawExamples, hasApi), [rawExamples, hasApi]);
+  const scrollIds = useMemo(() => getOnThisPageScrollIds(navItems), [navItems]);
+  const [activeSectionId, setActiveSectionId] = useState(() => scrollIds[0] ?? "overview");
 
   const usageCode = `import { ${comp.name} } from "tri-ui-library";
 import "tri-ui-library/styles.css";`;
 
-  const scrollTo = (sectionId) => {
-    document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
-  };
+  const scrollTo = useCallback((sectionId) => {
+    const el = document.getElementById(sectionId);
+    if (!el) return;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    el.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+    setActiveSectionId(sectionId);
+  }, []);
+
+  useEffect(() => {
+    setActiveSectionId(scrollIds[0] ?? "overview");
+  }, [comp.id, scrollIds]);
+
+  useEffect(() => {
+    if (!scrollIds.length) return undefined;
+
+    const syncScrollMargin = () => {
+      const nav = document.querySelector(".demo-nav");
+      const h = nav ? Math.ceil(nav.getBoundingClientRect().height) + 12 : 88;
+      document.documentElement.style.setProperty("--demo-doc-scroll-margin", `${h}px`);
+    };
+
+    const computeActive = () => {
+      const nav = document.querySelector(".demo-nav");
+      const offset = (nav ? nav.getBoundingClientRect().height : 72) + 12;
+      const scrollY = window.scrollY;
+      const trigger = scrollY + offset;
+      let active = scrollIds[0];
+      for (const sid of scrollIds) {
+        const el = document.getElementById(sid);
+        if (!el) continue;
+        const top = el.getBoundingClientRect().top + scrollY;
+        if (top <= trigger) active = sid;
+        else break;
+      }
+      setActiveSectionId((prev) => (prev === active ? prev : active));
+    };
+
+    syncScrollMargin();
+    computeActive();
+
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(() => {
+          computeActive();
+          ticking = false;
+        });
+      }
+    };
+
+    const onResize = () => {
+      syncScrollMargin();
+      computeActive();
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [scrollIds]);
 
   return (
     <div className="demo-detail-wrap">
@@ -148,7 +238,7 @@ import "tri-ui-library/styles.css";`;
 
         <section id="examples" className="demo-detail-section">
           <h2 className="demo-detail-heading">Examples</h2>
-          {examples.map((ex) => (
+          {(rawExamples || []).map((ex) => (
             <div key={ex.id} id={`example-${ex.id}`} className="demo-detail-example">
               <h3 className="demo-detail-example-title">{ex.title}</h3>
               <div className="demo-detail-preview">
@@ -197,7 +287,7 @@ import "tri-ui-library/styles.css";`;
       <aside className="demo-detail-sidebar">
         <nav className="demo-on-this-page" aria-label="On this page">
           <h3 className="demo-on-this-page-title">On this page</h3>
-          <OnThisPageNav items={navItems} scrollTo={scrollTo} />
+          <OnThisPageNav items={navItems} scrollTo={scrollTo} activeId={activeSectionId} />
         </nav>
       </aside>
     </div>
