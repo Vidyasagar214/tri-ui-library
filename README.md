@@ -23,12 +23,29 @@ This library is set up like other React UI packages: consumers install it from t
 
 ### Publish a version
 
-```bash
-npm run build          # optional; prepublishOnly runs this automatically
-npm publish            # first publish: public unscoped package goes live
-```
+1. Log in (once per machine, or when the token expires):
 
-- Bump **`version`** in `package.json` (semver) for each release, or use `npm version patch|minor|major` before `npm publish`.
+   ```bash
+   npm login --auth-type=web
+   ```
+
+2. Bump **`version`** in `package.json` (semver), or run `npm version patch --no-git-tag-version` (also updates `package-lock.json`).
+
+3. Publish (checks login first, then runs `prepublishOnly` → build → publish):
+
+   ```bash
+   npm run release
+   ```
+
+   Or use `npm publish` alone after confirming `npm whoami` prints your username.
+
+#### If `npm publish` fails with **E404** or **E401**
+
+- **E401** on `npm whoami`: you are not logged in. Run `npm login --auth-type=web` and finish the browser step.
+- **E404** on `PUT …/tri-ui-library` while the package exists on npm: almost always **wrong or missing auth** (npm hides “forbidden” as 404). Log in again; ensure your npm user is a **maintainer** of `tri-ui-library` on [npmjs.com](https://www.npmjs.com/package/tri-ui-library).
+- **E403** “cannot publish over the previously published versions”: bump `version` in `package.json` (you cannot re-publish the same semver twice).
+- In **PowerShell**, run commands on separate lines. Avoid pasting `npm whoami # comment` on one line with `>>` continuations; that can break the shell.
+
 - **`files`**: only the `dist/` folder is published (plus `README.md` and `LICENSE` automatically).
 - **Peer deps:** apps must install `react` and `react-dom` themselves (same as MUI/Chakra).
 
