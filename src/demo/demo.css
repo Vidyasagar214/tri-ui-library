@@ -1291,6 +1291,14 @@
   color: var(--ui-muted-foreground);
 }
 
+/* DataTable dark variant demo (docs) */
+.demo-datatable-dark-wrap {
+  padding: var(--ui-spacing-lg);
+  border-radius: 1rem;
+  background: linear-gradient(165deg, #0f172a 0%, #1e293b 100%);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
 /* -------------------------------------------------------------------------- */
 /* Users feedbacks (/users-feedbacks)                                         */
 /* -------------------------------------------------------------------------- */

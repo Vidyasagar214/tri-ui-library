@@ -52,6 +52,13 @@ const DownloadIcon = () => (
 const CheckIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
 );
+/** User silhouette for Avatar custom `placeholder` demos */
+const AvatarUserIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <circle cx="12" cy="8" r="3.5" />
+    <path d="M4 20v-1a8 8 0 0 1 16 0v1" />
+  </svg>
+);
 const DashHomeIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>
 );
@@ -74,6 +81,66 @@ const DEMO_CARD_PLACEHOLDER_IMG =
   encodeURIComponent(
     '<svg xmlns="http://www.w3.org/2000/svg" width="286" height="180" viewBox="0 0 286 180"><rect fill="%23e2e8f0" width="286" height="180"/><text x="143" y="90" dominant-baseline="middle" text-anchor="middle" fill="%2394a3b8" font-family="system-ui,sans-serif" font-size="14">286×180</text></svg>'
   );
+
+const DEMO_TABLE_COLUMNS = [
+  { key: "name", header: "Name" },
+  { key: "email", header: "Email" },
+  { key: "role", header: "Role" },
+];
+const DEMO_TABLE_ROWS = [
+  { name: "Alice", email: "alice@example.com", role: "Admin" },
+  { name: "Bob", email: "bob@example.com", role: "User" },
+  { name: "Carol", email: "carol@example.com", role: "Editor" },
+];
+const DEMO_TABLE_WIDE_COLUMNS = [
+  { key: "id", header: "ID" },
+  { key: "name", header: "Name" },
+  { key: "dept", header: "Department" },
+  { key: "email", header: "Email" },
+  { key: "location", header: "Office" },
+  { key: "status", header: "Status" },
+];
+const DEMO_TABLE_WIDE_ROWS = [
+  {
+    id: "1001",
+    name: "Alice Johnson",
+    dept: "Engineering",
+    email: "alice.j@corp.example.com",
+    location: "Austin, TX",
+    status: "Active",
+  },
+  {
+    id: "1002",
+    name: "Bob Smith",
+    dept: "Design",
+    email: "bob.smith@corp.example.com",
+    location: "London, UK",
+    status: "Active",
+  },
+  {
+    id: "1003",
+    name: "Carol Davis",
+    dept: "Marketing",
+    email: "carol.davis@corp.example.com",
+    location: "Singapore",
+    status: "Away",
+  },
+];
+
+const DEMO_TABLE_MANY_ROWS = [
+  { name: "Alice", email: "alice@example.com", role: "Admin" },
+  { name: "Bob", email: "bob@example.com", role: "User" },
+  { name: "Carol", email: "carol@example.com", role: "Editor" },
+  { name: "Dan", email: "dan@example.com", role: "User" },
+  { name: "Eve", email: "eve@example.com", role: "Admin" },
+  { name: "Frank", email: "frank@example.com", role: "User" },
+  { name: "Grace", email: "grace@example.com", role: "Editor" },
+  { name: "Henry", email: "henry@example.com", role: "User" },
+  { name: "Ivy", email: "ivy@example.com", role: "Admin" },
+  { name: "Jack", email: "jack@example.com", role: "User" },
+  { name: "Kate", email: "kate@example.com", role: "Editor" },
+  { name: "Leo", email: "leo@example.com", role: "User" },
+];
 
 /** Default installation snippet for any component */
 const defaultInstall = `npm install tri-ui-library`;
@@ -1104,7 +1171,8 @@ export const componentsRegistry = [
   {
     id: "data-table",
     name: "DataTable",
-    description: "Table built from columns and data arrays.",
+    description:
+      "Table built from columns and data arrays. Supports compact size, dark surface, row/column striping, responsive horizontal scroll, and optional client-side pagination.",
     examples: [
       {
         id: "basic",
@@ -1115,24 +1183,120 @@ export const componentsRegistry = [
     { key: "email", header: "Email" },
     { key: "role", header: "Role" },
   ]}
-  data={[
-    { name: "Alice", email: "alice@example.com", role: "Admin" },
-    { name: "Bob", email: "bob@example.com", role: "User" },
-  ]}
+  data={[...]}
+/>`,
+        Demo: () => <DataTable columns={DEMO_TABLE_COLUMNS} data={DEMO_TABLE_ROWS} />,
+      },
+      {
+        id: "small-table",
+        title: "Small table",
+        code: `<DataTable size="sm" columns={...} data={...} />`,
+        Demo: () => <DataTable size="sm" columns={DEMO_TABLE_COLUMNS} data={DEMO_TABLE_ROWS} />,
+      },
+      {
+        id: "dark-table",
+        title: "Dark table",
+        code: `<DataTable variant="dark" columns={...} data={...} />`,
+        Demo: () => (
+          <div className="demo-datatable-dark-wrap">
+            <DataTable variant="dark" columns={DEMO_TABLE_COLUMNS} data={DEMO_TABLE_ROWS} />
+          </div>
+        ),
+      },
+      {
+        id: "striped-rows",
+        title: "Striped rows",
+        code: `<DataTable striped="rows" columns={...} data={...} />`,
+        Demo: () => <DataTable striped="rows" columns={DEMO_TABLE_COLUMNS} data={DEMO_TABLE_ROWS} />,
+      },
+      {
+        id: "striped-columns",
+        title: "Striped columns",
+        code: `<DataTable striped="columns" columns={...} data={...} />`,
+        Demo: () => <DataTable striped="columns" columns={DEMO_TABLE_COLUMNS} data={DEMO_TABLE_ROWS} />,
+      },
+      {
+        id: "striped-both",
+        title: "Striped rows and columns",
+        code: `<DataTable striped="both" columns={...} data={...} />`,
+        Demo: () => <DataTable striped="both" columns={DEMO_TABLE_COLUMNS} data={DEMO_TABLE_ROWS} />,
+      },
+      {
+        id: "responsive-always",
+        title: "Responsive — always",
+        code: `<DataTable
+  responsive="always"
+  columns={wideColumns}
+  data={wideRows}
 />`,
         Demo: () => (
-          <DataTable
-            columns={[
-              { key: "name", header: "Name" },
-              { key: "email", header: "Email" },
-              { key: "role", header: "Role" },
-            ]}
-            data={[
-              { name: "Alice", email: "alice@example.com", role: "Admin" },
-              { name: "Bob", email: "bob@example.com", role: "User" },
-            ]}
-          />
+          <div className="demo-stack">
+            <p className="demo-detail-text" style={{ marginBottom: 0 }}>
+              Wide table: the wrapper scrolls horizontally whenever content overflows (default).
+            </p>
+            <DataTable responsive="always" columns={DEMO_TABLE_WIDE_COLUMNS} data={DEMO_TABLE_WIDE_ROWS} />
+          </div>
         ),
+      },
+      {
+        id: "responsive-breakpoint",
+        title: "Responsive — breakpoint specific",
+        code: `<DataTable
+  responsive="breakpoint"
+  responsiveBreakpoint="lg"
+  columns={wideColumns}
+  data={wideRows}
+/>`,
+        Demo: () => (
+          <div className="demo-stack">
+            <p className="demo-detail-text" style={{ marginBottom: 0 }}>
+              Horizontal scroll applies below the <strong>lg</strong> breakpoint (~992px); wider viewports use
+              <code style={{ margin: "0 0.25rem" }}> overflow-x: visible</code>.
+            </p>
+            <DataTable
+              responsive="breakpoint"
+              responsiveBreakpoint="lg"
+              columns={DEMO_TABLE_WIDE_COLUMNS}
+              data={DEMO_TABLE_WIDE_ROWS}
+            />
+          </div>
+        ),
+      },
+      {
+        id: "pagination",
+        title: "Pagination",
+        code: `<DataTable
+  pageSize={5}
+  columns={columns}
+  data={manyRows}
+/>`,
+        Demo: () => (
+          <DataTable pageSize={5} columns={DEMO_TABLE_COLUMNS} data={DEMO_TABLE_MANY_ROWS} defaultPage={1} />
+        ),
+      },
+      {
+        id: "pagination-controlled",
+        title: "Pagination (controlled)",
+        code: `const [page, setPage] = useState(1);
+<DataTable
+  page={page}
+  onPageChange={setPage}
+  pageSize={4}
+  columns={columns}
+  data={manyRows}
+/>`,
+        Demo: () => {
+          const [page, setPage] = useState(1);
+          return (
+            <DataTable
+              page={page}
+              onPageChange={setPage}
+              pageSize={4}
+              columns={DEMO_TABLE_COLUMNS}
+              data={DEMO_TABLE_MANY_ROWS}
+            />
+          );
+        },
       },
       {
         id: "empty",
@@ -1155,6 +1319,51 @@ export const componentsRegistry = [
       { name: "columns", type: "Array<{key, header}>", default: "[]", description: "Column definitions" },
       { name: "data", type: "Array<object>", default: "[]", description: "Row data" },
       { name: "emptyMessage", type: "string", default: "'No data'", description: "Message when data is empty" },
+      { name: "size", type: "'md' | 'sm'", default: "'md'", description: "Compact `sm` padding and smaller type" },
+      { name: "variant", type: "'default' | 'dark'", default: "'default'", description: "Light or dark table surface" },
+      {
+        name: "striped",
+        type: "false | 'rows' | 'columns' | 'both'",
+        default: "false",
+        description: "Zebra striping by row, column, or both",
+      },
+      {
+        name: "responsive",
+        type: "'always' | 'breakpoint' | false | 'never'",
+        default: "'always'",
+        description: "Always allow horizontal scroll, only below a breakpoint, or never (`false`/`never`)",
+      },
+      {
+        name: "responsiveBreakpoint",
+        type: "'sm' | 'md' | 'lg' | 'xl' | 'xxl'",
+        default: "'md'",
+        description: "Max-width breakpoint when `responsive=\"breakpoint\"` (Bootstrap-aligned px)",
+      },
+      {
+        name: "pageSize",
+        type: "number",
+        default: "0",
+        description: "Rows per page; `0` or omit to show all rows (no pagination bar)",
+      },
+      {
+        name: "page",
+        type: "number",
+        default: "-",
+        description: "Controlled current page (1-based); pair with `onPageChange`",
+      },
+      {
+        name: "defaultPage",
+        type: "number",
+        default: "1",
+        description: "Initial page when uncontrolled",
+      },
+      {
+        name: "onPageChange",
+        type: "(page: number) => void",
+        default: "-",
+        description: "Called when the user changes page (controlled mode)",
+      },
+      { name: "className", type: "string", default: "''", description: "Extra class on the root wrapper" },
     ],
   },
   // --- Remaining components: single "Basic" example each ---
@@ -1193,11 +1402,125 @@ export const componentsRegistry = [
   {
     id: "avatar",
     name: "Avatar",
-    description: "User avatar with image or fallback. Sizes: sm, md, lg.",
+    description:
+      "Profile image with loading placeholder (shimmer or custom node), initials or text fallback when there is no URL or the image errors, optional square shape, ring, and presence dot (online / offline / busy / away). Sizes xs–lg.",
     examples: [
-      { id: "basic", title: "Basic", code: `<Avatar alt="Jane" fallback="JD" />\n<Avatar size="lg" fallback="A" />`, Demo: () => <div className="demo-flex gap"><Avatar alt="Jane" fallback="JD" /><Avatar size="lg" fallback="A" /></div> },
+      {
+        id: "initials",
+        title: "Initials & sizes",
+        code: `<Avatar alt="Jane Doe" />
+<Avatar fallback="AB" size="sm" />
+<Avatar size="lg" fallback="XL" />`,
+        Demo: () => (
+          <div className="demo-flex gap wrap">
+            <Avatar alt="Jane Doe" />
+            <Avatar alt="Alex" size="xs" />
+            <Avatar fallback="AB" size="sm" />
+            <Avatar size="md" fallback="MD" />
+            <Avatar size="lg" fallback="LG" />
+          </div>
+        ),
+      },
+      {
+        id: "image",
+        title: "With image",
+        code: `<Avatar
+  src="https://picsum.photos/id/64/128/128"
+  alt="Portrait"
+  fallback="ME"
+/>`,
+        Demo: () => (
+          <div className="demo-flex gap wrap">
+            <Avatar src="https://picsum.photos/id/64/128/128" alt="Portrait" fallback="ME" />
+            <Avatar src="https://picsum.photos/id/237/128/128" alt="Dog" fallback="DG" shape="square" />
+          </div>
+        ),
+      },
+      {
+        id: "placeholder-loading",
+        title: "Loading placeholder",
+        code: `/* Default: shimmer until image loads.
+   Custom: placeholder={<Icon />}
+   Change \`src\` (e.g. new key) to see loading again. */
+<Avatar src={url} alt="User" fallback="U" />`,
+        Demo: () => {
+          const [k, setK] = useState(0);
+          const src = `https://picsum.photos/id/${[433, 64, 237][k % 3]}/128/128`;
+          return (
+            <div className="demo-stack">
+              <div className="demo-flex gap wrap">
+                <Avatar key={src} src={src} alt="User" fallback="U" />
+                <Avatar key={`c-${src}`} src={src} alt="User" fallback="U" placeholder={<AvatarUserIcon />} />
+                <Button type="button" size="sm" variant="secondary" onClick={() => setK((n) => n + 1)}>
+                  New photo (reload)
+                </Button>
+              </div>
+            </div>
+          );
+        },
+      },
+      {
+        id: "error-fallback",
+        title: "Broken image → fallback",
+        code: `<Avatar
+  src="https://invalid.example/no-image.png"
+  alt="Sam Lee"
+  fallback="SL"
+/>`,
+        Demo: () => (
+          <div className="demo-flex gap wrap">
+            <Avatar src="https://invalid.example/no-image.png" alt="Sam Lee" fallback="SL" />
+            <Avatar src="https://invalid.example/missing.jpg" alt="No user" />
+          </div>
+        ),
+      },
+      {
+        id: "ring-shape",
+        title: "Ring & square",
+        code: `<Avatar ring src="..." alt="You" />
+<Avatar shape="square" fallback="SQ" />`,
+        Demo: () => (
+          <div
+            className="demo-flex gap wrap"
+            style={{
+              padding: "var(--ui-spacing-md)",
+              borderRadius: "var(--ui-border-radius)",
+              background: "var(--ui-muted)",
+            }}
+          >
+            <Avatar ring src="https://picsum.photos/id/1027/128/128" alt="You" fallback="YO" />
+            <Avatar ring shape="square" size="lg" fallback="SQ" />
+          </div>
+        ),
+      },
+      {
+        id: "presence",
+        title: "Presence",
+        code: `<Avatar presence="online" src="..." alt="Online user" />
+<Avatar presence="busy" fallback="B" />
+<Avatar presence="away" alt="Away" />
+<Avatar presence="offline" alt="Offline" />`,
+        Demo: () => (
+          <div className="demo-flex gap wrap">
+            <Avatar presence="online" src="https://picsum.photos/id/338/128/128" alt="Online user" fallback="ON" />
+            <Avatar presence="busy" fallback="B" alt="Busy" />
+            <Avatar presence="away" alt="Away user" />
+            <Avatar presence="offline" alt="Offline user" />
+          </div>
+        ),
+      },
     ],
-    api: [],
+    api: [
+      { name: "src", type: "string", default: "-", description: "Image URL; while loading, placeholder (shimmer or `placeholder`) is shown" },
+      { name: "alt", type: "string", default: "''", description: "Accessible name and default initials when `fallback` is omitted" },
+      { name: "fallback", type: "string", default: "-", description: "Text or initials when there is no `src` or the image fails to load" },
+      { name: "placeholder", type: "ReactNode", default: "shimmer", description: "Custom content during image load (default skeleton)" },
+      { name: "size", type: "'xs' | 'sm' | 'md' | 'lg'", default: "'md'", description: "Diameter" },
+      { name: "shape", type: "'circle' | 'square'", default: "'circle'", description: "Square uses rounded corners" },
+      { name: "ring", type: "boolean", default: "false", description: "Outer ring matching page background (for avatars on photos)" },
+      { name: "presence", type: "'online' | 'offline' | 'busy' | 'away'", default: "-", description: "Small corner indicator" },
+      { name: "className", type: "string", default: "''", description: "Applied to the outer wrapper" },
+    ],
   },
   {
     id: "badge",
@@ -1229,11 +1552,126 @@ export const componentsRegistry = [
   {
     id: "calendar",
     name: "Calendar",
-    description: "Month calendar. value (Date) and onChange.",
+    description:
+      "Month grid with prev/next month navigation, today and selected styling, optional min/max dates, custom disabled rules, Monday week start, outside days, ISO week numbers, locale-aware labels, and a Today action.",
     examples: [
-      { id: "basic", title: "Basic", code: `const [date, setDate] = useState(new Date());\n<Calendar value={date} onChange={setDate} />`, Demo: () => { const [d, setD] = useState(new Date()); return <Calendar value={d} onChange={setD} />; } },
+      {
+        id: "basic",
+        title: "Basic",
+        code: `const [date, setDate] = useState(new Date());
+<Calendar value={date} onChange={setDate} />`,
+        Demo: () => {
+          const [d, setD] = useState(new Date());
+          return <Calendar value={d} onChange={setD} />;
+        },
+      },
+      {
+        id: "today-button",
+        title: "Today button",
+        code: `<Calendar value={date} onChange={setDate} showTodayButton />`,
+        Demo: () => {
+          const [d, setD] = useState(new Date());
+          return <Calendar value={d} onChange={setD} showTodayButton />;
+        },
+      },
+      {
+        id: "week-starts-monday",
+        title: "Week starts on Monday",
+        code: `<Calendar value={date} onChange={setDate} weekStartsOn={1} />`,
+        Demo: () => {
+          const [d, setD] = useState(new Date());
+          return <Calendar value={d} onChange={setD} weekStartsOn={1} />;
+        },
+      },
+      {
+        id: "hide-outside-days",
+        title: "Hide outside days",
+        code: `<Calendar value={date} onChange={setDate} showOutsideDays={false} />`,
+        Demo: () => {
+          const [d, setD] = useState(new Date());
+          return <Calendar value={d} onChange={setD} showOutsideDays={false} />;
+        },
+      },
+      {
+        id: "week-numbers",
+        title: "Week numbers",
+        code: `<Calendar value={date} onChange={setDate} showWeekNumbers weekStartsOn={1} />`,
+        Demo: () => {
+          const [d, setD] = useState(new Date());
+          return <Calendar value={d} onChange={setD} showWeekNumbers weekStartsOn={1} />;
+        },
+      },
+      {
+        id: "min-max",
+        title: "Min and max date",
+        code: `<Calendar
+  value={date}
+  onChange={setDate}
+  minDate={min}
+  maxDate={max}
+/>`,
+        Demo: () => {
+          const [d, setD] = useState(new Date());
+          const min = new Date();
+          min.setDate(min.getDate() - 7);
+          const max = new Date();
+          max.setDate(max.getDate() + 14);
+          return <Calendar value={d} onChange={setD} minDate={min} maxDate={max} showTodayButton />;
+        },
+      },
+      {
+        id: "disabled-weekends",
+        title: "Disable weekends (isDateDisabled)",
+        code: `<Calendar
+  value={date}
+  onChange={setDate}
+  isDateDisabled={(dt) => {
+    const day = dt.getDay();
+    return day === 0 || day === 6;
+  }}
+/>`,
+        Demo: () => {
+          const [d, setD] = useState(new Date());
+          return (
+            <Calendar
+              value={d}
+              onChange={setD}
+              isDateDisabled={(dt) => {
+                const day = dt.getDay();
+                return day === 0 || day === 6;
+              }}
+            />
+          );
+        },
+      },
+      {
+        id: "locale",
+        title: "Locale (example: German)",
+        code: `<Calendar value={date} onChange={setDate} locale="de-DE" weekStartsOn={1} />`,
+        Demo: () => {
+          const [d, setD] = useState(new Date());
+          return <Calendar value={d} onChange={setD} locale="de-DE" weekStartsOn={1} />;
+        },
+      },
     ],
-    api: [],
+    api: [
+      { name: "value", type: "Date", default: "-", description: "Selected date (calendar-day resolution; time ignored)" },
+      { name: "onChange", type: "(date: Date) => void", default: "-", description: "Called with start-of-day Date when a day is chosen" },
+      { name: "minDate", type: "Date", default: "-", description: "Earliest selectable day" },
+      { name: "maxDate", type: "Date", default: "-", description: "Latest selectable day" },
+      {
+        name: "isDateDisabled",
+        type: "(date: Date) => boolean",
+        default: "-",
+        description: "Return true to disable a day (combined with min/max)",
+      },
+      { name: "weekStartsOn", type: "0 | 1", default: "0", description: "0 = Sunday first column, 1 = Monday first" },
+      { name: "showOutsideDays", type: "boolean", default: "true", description: "Show leading/trailing days from adjacent months" },
+      { name: "showWeekNumbers", type: "boolean", default: "false", description: "Show ISO week number column (pairs well with weekStartsOn={1})" },
+      { name: "locale", type: "string", default: "-", description: "BCP 47 locale for month/weekday labels (e.g. de-DE)" },
+      { name: "showTodayButton", type: "boolean", default: "false", description: "Show “Today” to jump to current month and select today" },
+      { name: "className", type: "string", default: "''", description: "Extra class on root" },
+    ],
   },
   {
     id: "carousel",
@@ -1247,11 +1685,83 @@ export const componentsRegistry = [
   {
     id: "chart",
     name: "Chart",
-    description: "Simple bar chart. Data: [{ label, value }].",
+    description:
+      "SVG bar or line chart with grid, Y-axis ticks, and hover tooltips. Pass data as [{ label, value, hint? }]; optional hint appears under the value in the tooltip.",
     examples: [
-      { id: "basic", title: "Basic", code: `<Chart data={[{ label: "Jan", value: 40 }, { label: "Feb", value: 65 }]} />`, Demo: () => <Chart data={[{ label: "Jan", value: 40 }, { label: "Feb", value: 65 }, { label: "Mar", value: 50 }]} /> },
+      {
+        id: "basic",
+        title: "Bar (hover)",
+        code: `<Chart
+  data={[
+    { label: "Jan", value: 40, hint: "Q1 start" },
+    { label: "Feb", value: 65 },
+    { label: "Mar", value: 50 },
+  ]}
+/>`,
+        Demo: () => (
+          <Chart
+            data={[
+              { label: "Jan", value: 40, hint: "Q1 start" },
+              { label: "Feb", value: 65 },
+              { label: "Mar", value: 50 },
+            ]}
+          />
+        ),
+      },
+      {
+        id: "line",
+        title: "Line",
+        code: `<Chart
+  type="line"
+  data={[
+    { label: "Jan", value: 12 },
+    { label: "Feb", value: 28 },
+    { label: "Mar", value: 22 },
+    { label: "Apr", value: 36 },
+  ]}
+  formatValue={(n) => \`\${n}k\`}
+/>`,
+        Demo: () => (
+          <Chart
+            type="line"
+            data={[
+              { label: "Jan", value: 12 },
+              { label: "Feb", value: 28 },
+              { label: "Mar", value: 22 },
+              { label: "Apr", value: 36, hint: "Campaign peak" },
+            ]}
+            formatValue={(n) => `${n}k`}
+          />
+        ),
+      },
+      {
+        id: "minimal",
+        title: "No grid",
+        code: `<Chart type="bar" showGrid={false} showYAxis={false} data={[...]} />`,
+        Demo: () => (
+          <Chart
+            type="bar"
+            showGrid={false}
+            showYAxis={false}
+            data={[
+              { label: "A", value: 8 },
+              { label: "B", value: 14 },
+              { label: "C", value: 11 },
+            ]}
+          />
+        ),
+      },
     ],
-    api: [],
+    api: [
+      { name: "data", type: "{ label: string, value: number, hint?: string }[]", default: "[]", description: "Series points; empty shows placeholder" },
+      { name: "type", type: "'bar' | 'line'", default: "'bar'", description: "Bar columns or connected line with points" },
+      { name: "formatValue", type: "(n: number) => string", default: "String(n)", description: "Formats Y ticks and tooltip value" },
+      { name: "minValue", type: "number", default: "0 (bar) / min(data,0) (line)", description: "Y-axis domain minimum" },
+      { name: "showGrid", type: "boolean", default: "true", description: "Horizontal grid lines" },
+      { name: "showYAxis", type: "boolean", default: "true", description: "Y tick labels" },
+      { name: "yTickCount", type: "number", default: "4", description: "Number of Y ticks (clamped 2–8)" },
+      { name: "className", type: "string", default: "''", description: "Extra class on the root" },
+    ],
   },
   {
     id: "collapsible",
