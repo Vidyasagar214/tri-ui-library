@@ -28,6 +28,9 @@ function LandingPage() {
           <Link to="/components" className="ui-btn ui-btn--primary ui-btn--md demo-landing-cta">
             Components
           </Link>
+          <Link to="https://demo-tri-ui.vercel.app" target="_blank" className="ui-btn ui-btn--primary ui-btn--md demo-landing-cta">
+            Demo Site
+          </Link>
         </div>
         <p className="demo-landing-version-line">
           Current version: <strong>{PACKAGE_VERSION}</strong> (npm)
