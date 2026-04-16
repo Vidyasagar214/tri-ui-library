@@ -1,0 +1,39 @@
+.ui-form-layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-spacing-md);
+  width: 100%;
+}
+
+.ui-form-layout-row {
+  display: grid;
+  gap: var(--ui-spacing-md);
+  width: 100%;
+}
+
+.ui-form-layout-row--1 {
+  grid-template-columns: 1fr;
+}
+
+.ui-form-layout-row--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.ui-form-layout-row--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 36rem) {
+  .ui-form-layout-row--stack.ui-form-layout-row--2,
+  .ui-form-layout-row--stack.ui-form-layout-row--3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ui-form-layout-col {
+  min-width: 0;
+}
+
+.ui-form-layout-col--span-2 {
+  grid-column: span 2;
+}

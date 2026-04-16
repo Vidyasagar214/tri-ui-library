@@ -1,0 +1,9 @@
+.ui-form-feedback {
+  font-size: var(--ui-font-size-sm);
+  line-height: var(--ui-line-height-normal);
+  color: var(--ui-muted-foreground);
+}
+
+.ui-form-feedback--invalid {
+  color: var(--ui-danger);
+}

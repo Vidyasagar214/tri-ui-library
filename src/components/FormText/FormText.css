@@ -1,0 +1,9 @@
+.ui-form-text {
+  margin: 0;
+  font-size: var(--ui-font-size-sm);
+  line-height: var(--ui-line-height-normal);
+}
+
+.ui-form-text--muted {
+  color: var(--ui-muted-foreground);
+}

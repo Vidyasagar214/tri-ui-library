@@ -1,0 +1,11 @@
+.ui-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-spacing-md);
+  width: 100%;
+  max-width: 32rem;
+}
+
+.ui-form--full {
+  max-width: none;
+}

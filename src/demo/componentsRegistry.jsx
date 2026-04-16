@@ -27,6 +27,11 @@ import {
   DropdownMenu,
   Empty,
   Field,
+  FloatingLabel,
+  Form,
+  FormFeedback,
+  FormLayout,
+  FormText,
   HoverCard,
   Input,
   InputGroup,
@@ -34,9 +39,14 @@ import {
   Navbar,
   NavLink,
   Progress,
+  Radio,
+  RadioGroup,
+  Range,
+  Select,
   Sidebar,
   Spinner,
   Tabs,
+  Textarea,
 } from "../index";
 
 /* Simple SVG icons for Button demos (no icon library dependency) */
@@ -422,7 +432,8 @@ export const componentsRegistry = [
   {
     id: "input",
     name: "Input",
-    description: "Text input with optional label and error state.",
+    description:
+      "Single-line text input with optional label and error state. Pair with Field, FormLayout, or Form. Use the Textarea component for multiline text.",
     examples: [
       {
         id: "basic",
@@ -460,11 +471,270 @@ export const componentsRegistry = [
           </div>
         ),
       },
+      {
+        id: "textarea",
+        title: "Multiline (Textarea)",
+        code: `<Textarea label="Message" rows={4} placeholder="How can we help?" />`,
+        Demo: () => (
+          <div className="demo-stack">
+            <Textarea label="Message" rows={4} placeholder="How can we help?" />
+            <Textarea label="With error" error="Please enter at least 10 characters." rows={3} defaultValue="Hi" />
+          </div>
+        ),
+      },
     ],
     api: [
       { name: "label", type: "string", default: "-", description: "Label text" },
       { name: "error", type: "string", default: "-", description: "Error message" },
       { name: "disabled", type: "boolean", default: "false", description: "Disable input" },
+      { name: "type", type: "string", default: "'text'", description: "Native input type" },
+      { name: "placeholder", type: "string", default: "-", description: "Placeholder text" },
+      { name: "id", type: "string", default: "auto", description: "Element id (links label)" },
+      { name: "className", type: "string", default: "''", description: "Class on the input" },
+    ],
+  },
+  {
+    id: "form",
+    name: "Form",
+    description:
+      "Semantic `<form>` wrapper with vertical spacing. Compose with Field, Input, Select, Checkbox, RadioGroup, and FormLayout.",
+    examples: [
+      {
+        id: "basic",
+        title: "Basic",
+        code: `<Form onSubmit={(e) => { e.preventDefault(); }}>
+  <Field label="Email" id="em"><Input id="em" type="email" /></Field>
+  <Button type="submit" variant="primary">Save</Button>
+</Form>`,
+        Demo: () => (
+          <Form
+            className="ui-form--full"
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
+          >
+            <Field label="Email" id="demo-form-em">
+              <Input id="demo-form-em" type="email" placeholder="you@example.com" />
+            </Field>
+            <div>
+              <Button type="submit" variant="primary">
+                Save
+              </Button>
+            </div>
+          </Form>
+        ),
+      },
+    ],
+    api: [
+      { name: "children", type: "ReactNode", default: "-", description: "Fields and actions" },
+      { name: "className", type: "string", default: "''", description: "Extra class (`ui-form--full` removes max-width)" },
+      { name: "(native)", type: "form attributes", default: "-", description: "onSubmit, action, method, noValidate, etc." },
+    ],
+  },
+  {
+    id: "form-text",
+    name: "FormText",
+    description: "Helper or descriptive copy associated with controls; pair with `aria-describedby` on the input.",
+    examples: [
+      {
+        id: "basic",
+        title: "Basic",
+        code: `<Input id="pw" type="password" aria-describedby="pw-help" />
+<FormText id="pw-help" tone="muted">Must be at least 8 characters.</FormText>`,
+        Demo: () => (
+          <div className="demo-stack">
+            <Input id="demo-pw" type="password" placeholder="••••••••" aria-describedby="demo-pw-help" />
+            <FormText id="demo-pw-help" tone="muted">
+              Must be at least 8 characters. Do not reuse an old password.
+            </FormText>
+          </div>
+        ),
+      },
+    ],
+    api: [
+      { name: "tone", type: "'default' | 'muted'", default: "'muted'", description: "Visual weight" },
+      { name: "as", type: "element type", default: "'p'", description: "Underlying element" },
+      { name: "id", type: "string", default: "-", description: "For aria-describedby" },
+      { name: "className", type: "string", default: "''", description: "Extra class" },
+    ],
+  },
+  {
+    id: "form-feedback",
+    name: "FormFeedback",
+    description: "Validation or status text below a field. Set `invalid` for errors (uses role=\"alert\").",
+    examples: [
+      {
+        id: "basic",
+        title: "Valid vs invalid",
+        code: `<FormFeedback>Looks good.</FormFeedback>
+<FormFeedback invalid>This field is required.</FormFeedback>`,
+        Demo: () => (
+          <div className="demo-stack">
+            <FormFeedback>Username is available.</FormFeedback>
+            <FormFeedback invalid>Please enter a valid email address.</FormFeedback>
+          </div>
+        ),
+      },
+    ],
+    api: [
+      { name: "invalid", type: "boolean", default: "false", description: "Error styling and role=\"alert\"" },
+      { name: "id", type: "string", default: "-", description: "For aria-describedby" },
+      { name: "className", type: "string", default: "''", description: "Extra class" },
+    ],
+  },
+  {
+    id: "form-layout",
+    name: "FormLayout",
+    description: "Responsive grid rows and columns for aligning multiple fields.",
+    examples: [
+      {
+        id: "two-col",
+        title: "Two columns",
+        code: `<FormLayout>
+  <FormLayout.Row columns={2}>
+    <FormLayout.Col><Field label="First" id="f"><Input id="f" /></Field></FormLayout.Col>
+    <FormLayout.Col><Field label="Last" id="l"><Input id="l" /></Field></FormLayout.Col>
+  </FormLayout.Row>
+</FormLayout>`,
+        Demo: () => (
+          <FormLayout>
+            <FormLayout.Row columns={2}>
+              <FormLayout.Col>
+                <Field label="First name" id="demo-fn">
+                  <Input id="demo-fn" placeholder="Jane" />
+                </Field>
+              </FormLayout.Col>
+              <FormLayout.Col>
+                <Field label="Last name" id="demo-ln">
+                  <Input id="demo-ln" placeholder="Doe" />
+                </Field>
+              </FormLayout.Col>
+            </FormLayout.Row>
+            <Field label="Email" id="demo-em2">
+              <Input id="demo-em2" type="email" />
+            </Field>
+          </FormLayout>
+        ),
+      },
+    ],
+    api: [
+      { name: "FormLayout.Row", type: "component", default: "-", description: "`columns`: 1 | 2 | 3; `stack` (default true) stacks on small screens" },
+      { name: "FormLayout.Col", type: "component", default: "-", description: "`span`: 2 spans full row in a 2-col grid" },
+    ],
+  },
+  {
+    id: "select",
+    name: "Select",
+    description: "Styled native select for simple option lists (see Combobox for searchable lists).",
+    examples: [
+      {
+        id: "basic",
+        title: "Basic",
+        code: `const [v, setV] = useState("ca");
+<Select
+  label="Country"
+  value={v}
+  onChange={(e) => setV(e.target.value)}
+  options={[
+    { value: "us", label: "United States" },
+    { value: "ca", label: "Canada" },
+  ]}
+/>`,
+        Demo: () => {
+          const [v, setV] = useState("ca");
+          return (
+            <Select
+              label="Country"
+              value={v}
+              onChange={(e) => setV(e.target.value)}
+              options={[
+                { value: "us", label: "United States" },
+                { value: "ca", label: "Canada" },
+                { value: "uk", label: "United Kingdom" },
+              ]}
+            />
+          );
+        },
+      },
+      {
+        id: "error",
+        title: "With error",
+        code: `<Select label="Role" error="Choose a role" options={[...]} />`,
+        Demo: () => (
+          <Select
+            label="Role"
+            error="Choose a role"
+            options={[
+              { value: "", label: "Select…" },
+              { value: "admin", label: "Admin" },
+              { value: "user", label: "User" },
+            ]}
+          />
+        ),
+      },
+    ],
+    api: [
+      { name: "options", type: "{ value, label }[]", default: "[]", description: "Option list (or use children `<option>`)" },
+      { name: "label", type: "string", default: "-", description: "Label text" },
+      { name: "error", type: "string", default: "-", description: "Error message" },
+      { name: "value / onChange", type: "string / function", default: "-", description: "Controlled usage" },
+      { name: "disabled", type: "boolean", default: "false", description: "Disable control" },
+    ],
+  },
+  {
+    id: "range",
+    name: "Range",
+    description: "Accessible native range input with Tri UI accent styling.",
+    examples: [
+      {
+        id: "basic",
+        title: "Basic",
+        code: `const [n, setN] = useState(40);
+<Range label="Volume" min={0} max={100} value={n} onChange={(e) => setN(Number(e.target.value))} showValue />`,
+        Demo: () => {
+          const [n, setN] = useState(40);
+          return (
+            <Range
+              label="Volume"
+              min={0}
+              max={100}
+              value={n}
+              onChange={(e) => setN(Number(e.target.value))}
+              showValue
+            />
+          );
+        },
+      },
+    ],
+    api: [
+      { name: "label", type: "string", default: "-", description: "Label text" },
+      { name: "showValue", type: "boolean", default: "false", description: "Show current value when controlled" },
+      { name: "min / max / step", type: "number", default: "0 / 100 / 1", description: "Native range props" },
+      { name: "error", type: "string", default: "-", description: "Error message" },
+    ],
+  },
+  {
+    id: "floating-label",
+    name: "FloatingLabel",
+    description: "Label animates above the field when focused or when the field has a value.",
+    examples: [
+      {
+        id: "basic",
+        title: "Basic",
+        code: `<FloatingLabel label="Email" type="email" autoComplete="email" />
+<FloatingLabel label="Password" type="password" error="Required" />`,
+        Demo: () => (
+          <div className="demo-stack">
+            <FloatingLabel label="Email" type="email" autoComplete="email" />
+            <FloatingLabel label="Password" type="password" error="Required" />
+          </div>
+        ),
+      },
+    ],
+    api: [
+      { name: "label", type: "string", default: "-", description: "Floating label text" },
+      { name: "error", type: "string", default: "-", description: "Error message below field" },
+      { name: "type", type: "string", default: "'text'", description: "Native input type" },
     ],
   },
   {
@@ -832,8 +1102,8 @@ export const componentsRegistry = [
   },
   {
     id: "checkbox",
-    name: "Checkbox",
-    description: "Checkbox with optional label. Supports controlled and indeterminate state.",
+    name: "Checks & radios",
+    description: "Checkbox with optional label (including indeterminate). Use RadioGroup + Radio for single-choice lists.",
     examples: [
       {
         id: "basic",
@@ -885,6 +1155,25 @@ export const componentsRegistry = [
           />
         ),
       },
+      {
+        id: "radio-group",
+        title: "Radio group",
+        code: `const [plan, setPlan] = useState("pro");
+<RadioGroup name="plan" label="Billing" value={plan} onChange={setPlan}>
+  <Radio value="free" label="Free" />
+  <Radio value="pro" label="Pro" />
+</RadioGroup>`,
+        Demo: () => {
+          const [plan, setPlan] = useState("pro");
+          return (
+            <RadioGroup name="demo-plan" label="Billing plan" value={plan} onChange={setPlan}>
+              <Radio value="free" label="Free — $0" />
+              <Radio value="pro" label="Pro — $12/mo" />
+              <Radio value="team" label="Team — $29/mo" />
+            </RadioGroup>
+          );
+        },
+      },
     ],
     api: [
       { name: "checked", type: "boolean", default: "false", description: "Checked state" },
@@ -892,6 +1181,8 @@ export const componentsRegistry = [
       { name: "label", type: "string", default: "-", description: "Label text" },
       { name: "disabled", type: "boolean", default: "false", description: "Disable checkbox" },
       { name: "indeterminate", type: "boolean", default: "false", description: "Indeterminate state" },
+      { name: "RadioGroup", type: "component", default: "-", description: "`name`, `value`, `onChange(value)`, optional `label`" },
+      { name: "Radio", type: "component", default: "-", description: "`value`, `label`, `disabled` — must be inside RadioGroup" },
     ],
   },
   {
@@ -2308,11 +2599,38 @@ export const componentsRegistry = [
   {
     id: "field",
     name: "Field",
-    description: "Wrapper for label, error, hint around inputs.",
+    description: "Wrapper for label, control, hint, and error. Prefer FormText + aria-describedby for longer helper copy outside the field.",
     examples: [
-      { id: "basic", title: "Basic", code: `<Field label="Email" id="email"><Input id="email" type="email" /></Field>`, Demo: () => <Field label="Email" id="demo-f"><Input id="demo-f" type="email" placeholder="you@example.com" /></Field> },
+      {
+        id: "basic",
+        title: "Basic",
+        code: `<Field label="Email" id="email"><Input id="email" type="email" /></Field>`,
+        Demo: () => (
+          <Field label="Email" id="demo-f">
+            <Input id="demo-f" type="email" placeholder="you@example.com" />
+          </Field>
+        ),
+      },
+      {
+        id: "hint-error",
+        title: "Hint and error",
+        code: `<Field label="Username" id="u" hint="Letters and numbers only." error="Already taken">
+  <Input id="u" />
+</Field>`,
+        Demo: () => (
+          <Field label="Username" id="demo-u" hint="Letters and numbers only." error="That username is taken.">
+            <Input id="demo-u" defaultValue="jane" />
+          </Field>
+        ),
+      },
     ],
-    api: [],
+    api: [
+      { name: "label", type: "string", default: "-", description: "Label text" },
+      { name: "id", type: "string", default: "-", description: "Passed to label htmlFor; set the same id on the child control" },
+      { name: "hint", type: "string", default: "-", description: "Muted helper below the control" },
+      { name: "error", type: "string", default: "-", description: "Error message (role=\"alert\")" },
+      { name: "children", type: "ReactNode", default: "-", description: "Input, Select, Textarea, etc." },
+    ],
   },
   {
     id: "hover-card",
@@ -2326,11 +2644,38 @@ export const componentsRegistry = [
   {
     id: "input-group",
     name: "InputGroup",
-    description: "Input with left/right addons.",
+    description: "Input with left/right addons (text, icons, or buttons).",
     examples: [
-      { id: "basic", title: "Basic", code: `<InputGroup left="https://" right=".com"><Input placeholder="example" /></InputGroup>`, Demo: () => <InputGroup left="https://" right=".com"><Input placeholder="example" /></InputGroup> },
+      {
+        id: "basic",
+        title: "Basic",
+        code: `<InputGroup left="https://" right=".com"><Input placeholder="example" /></InputGroup>`,
+        Demo: () => (
+          <div className="demo-inputgroup-preview">
+            <InputGroup left="https://" right=".com">
+              <Input placeholder="example" />
+            </InputGroup>
+          </div>
+        ),
+      },
+      {
+        id: "search",
+        title: "With button",
+        code: `<InputGroup right={<Button type="button">Search</Button>}><Input placeholder="Query…" /></InputGroup>`,
+        Demo: () => (
+          <div className="demo-inputgroup-preview">
+            <InputGroup right={<Button type="button">Search</Button>}>
+              <Input placeholder="Search the library…" />
+            </InputGroup>
+          </div>
+        ),
+      },
     ],
-    api: [],
+    api: [
+      { name: "left", type: "ReactNode", default: "-", description: "Addon before the input" },
+      { name: "right", type: "ReactNode", default: "-", description: "Addon after the input" },
+      { name: "children", type: "ReactNode", default: "-", description: "Typically Input (without outer Field label duplication)" },
+    ],
   },
   {
     id: "input-otp",
