@@ -233,7 +233,12 @@
 }
 
 .ui-datatable-page-btn {
-  padding: var(--ui-spacing-xs) var(--ui-spacing-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.25rem;
+  min-height: 2.25rem;
+  padding: var(--ui-spacing-xs);
   font-family: inherit;
   font-size: var(--ui-font-size-xs);
   font-weight: var(--ui-font-weight-semibold);
@@ -246,6 +251,13 @@
     background-color var(--ui-transition-fast),
     border-color var(--ui-transition-fast),
     color var(--ui-transition-fast);
+}
+
+.ui-datatable-page-btn__icon {
+  display: block;
+  width: 1.125rem;
+  height: 1.125rem;
+  flex-shrink: 0;
 }
 
 .ui-datatable-page-btn:hover:not(:disabled) {

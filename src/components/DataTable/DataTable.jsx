@@ -1,6 +1,76 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import "./DataTable.css";
 
+function PaginationIconFirst() {
+  return (
+    <svg className="ui-datatable-page-btn__icon" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <polyline
+        points="11 7 6 12 11 17"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <polyline
+        points="18 7 13 12 18 17"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function PaginationIconPrev() {
+  return (
+    <svg className="ui-datatable-page-btn__icon" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <polyline
+        points="15 18 9 12 15 6"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function PaginationIconNext() {
+  return (
+    <svg className="ui-datatable-page-btn__icon" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <polyline
+        points="9 18 15 12 9 6"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function PaginationIconLast() {
+  return (
+    <svg className="ui-datatable-page-btn__icon" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <polyline
+        points="13 7 18 12 13 17"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <polyline
+        points="6 7 11 12 6 17"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 /**
  * Data table with columns and rows.
  * @param {Array<{ key: string, header: string }>} columns - Column definitions
@@ -131,8 +201,9 @@ function DataTable({
             onClick={() => goToPage(1)}
             disabled={currentPage <= 1}
             aria-label="First page"
+            title="First page"
           >
-            First
+            <PaginationIconFirst />
           </button>
           <button
             type="button"
@@ -140,8 +211,9 @@ function DataTable({
             onClick={() => goToPage(currentPage - 1)}
             disabled={currentPage <= 1}
             aria-label="Previous page"
+            title="Previous page"
           >
-            Previous
+            <PaginationIconPrev />
           </button>
           <span className="ui-datatable-pagination-status" aria-live="polite">
             Page {currentPage} of {totalPages}
@@ -152,8 +224,9 @@ function DataTable({
             onClick={() => goToPage(currentPage + 1)}
             disabled={currentPage >= totalPages}
             aria-label="Next page"
+            title="Next page"
           >
-            Next
+            <PaginationIconNext />
           </button>
           <button
             type="button"
@@ -161,8 +234,9 @@ function DataTable({
             onClick={() => goToPage(totalPages)}
             disabled={currentPage >= totalPages}
             aria-label="Last page"
+            title="Last page"
           >
-            Last
+            <PaginationIconLast />
           </button>
         </div>
       </nav>
